@@ -1,7 +1,7 @@
 
 PROPOSAL:
 
-* Project title:
+* Project title: Nerf blaster
 
 * Team members: Grace Hu, Steffi Andersen, Michael Oduoza
 
