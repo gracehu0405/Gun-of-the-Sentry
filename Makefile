@@ -1,9 +1,9 @@
 # A simple makefile for building program composed of C/asm source files.
-# Builds for ARM target using cross-development toolchain. 
+# Builds for ARM target using cross-development toolchain.
 # Refer to CS107E guide to Make for more information on makefiles
 
 APPLICATION = apps/clock
-MODULES = timer.o gpio.o abort.o
+#MODULES = timer.o gpio.o abort.o
 
 CFLAGS = -Og -g -Wall -std=c99 -ffreestanding
 LDFLAGS = -nostdlib -T memmap
@@ -19,7 +19,7 @@ all : $(APPLICATION).bin
 
 %.o: %.c
 	arm-none-eabi-gcc $(CFLAGS) -c $< -o $@
-	
+
 %.o: %.s
 	arm-none-eabi-as $< -o $@
 
