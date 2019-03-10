@@ -9,6 +9,9 @@ static int currentPosition;
 static int numSensors = 5;
 
 
+//temp variables
+
+
 void main(void)
 {
   uart_init();
@@ -23,8 +26,7 @@ void main(void)
         //findMoveNum is a calculation that determines where to shift from current Position
         int moveNum = findMoveNum(i, currentPosition);
         moveGun(moveNum); //moves gun 60 degrees * moveNum
-        fireGun()
-
+        fireGun();
         currentPosition = i;
       }
     }
