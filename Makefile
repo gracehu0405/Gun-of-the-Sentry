@@ -14,7 +14,7 @@ MY_MODULES =
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
 CFLAGS += -mapcs-frame -fno-omit-frame-pointer -mpoke-function-name
-LDFLAGS = -nostdlib -T memmap -L$(CS107E)/lib
+LDFLAGS = -nostdlib -T memmap  -L$(CS107E)/lib 
 LDLIBS  = -lpi -lgcc
 
 all : $(NAME).bin $(MY_MODULES)

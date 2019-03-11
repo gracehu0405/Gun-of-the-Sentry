@@ -1,5 +1,6 @@
 #include "printf.h"
 #include "uart.h"
+#include "gun.h"
 
 //need 3 files
     //motion detection (have function that returns the array with the motion values: 0 or 1 for each sensor)
