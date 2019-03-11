@@ -1,0 +1,10 @@
+# Git will not track these types of files
+
+*.o
+*.bin
+*.elf
+*.list
+*.text
+*.d
+*.a
+*.exe
