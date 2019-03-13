@@ -17,65 +17,87 @@
 #include "printf.h"
 #include "interrupts.h"
 
-const unsigned int TRIGGER = GPIO_PIN3;
-const unsigned int ECHO_RISING_PIN = GPIO_PIN2;
-const unsigned int ECHO_FALLING_PIN = GPIO_PIN4;
-const unsigned int echo = GPIO_PIN2;
-unsigned start_time = 0;
-unsigned end_time = 0;
-unsigned int distance = 0;
+const unsigned int TRIGGER_1 = GPIO_PIN3;
+const unsigned int ECHO_RISING_PIN_1 = GPIO_PIN2;
+const unsigned int ECHO_FALLING_PIN_1 = GPIO_PIN4;
 
-unsigned int get_distance(void) {
-	// write hi for 10usec
-	gpio_write(TRIGGER, 1);
-	timer_delay_us(10);
-	gpio_write(TRIGGER, 0);
+unsigned start_time_1 = 0;
+unsigned end_time_1 = 0;
+unsigned int distance_1 = 0;
 
-	//unsigned start = timer_get_ticks();
-	//timer_delay_us(149); // wait til device settles: 148 = time to go one inch
-	while(!gpio_read(echo))
-		;
+const unsigned int TRIGGER_2 = GPIO_PIN17;
+const unsigned int ECHO_RISING_PIN_2 = GPIO_PIN27;
+const unsigned int ECHO_FALLING_PIN_2 = GPIO_PIN22;
 
-    unsigned start = timer_get_ticks();
-	unsigned end;
-	while(gpio_read(echo) == 1)
-		;
-	end = timer_get_ticks();
+unsigned start_time_2 = 0;
+unsigned end_time_2 = 0;
+unsigned int distance_2 = 0;
 
-	// ((340M/S / 2) * 39.37inch / meter) / 10^6 = inch/usec
-	return (end - start) / 149;
-}
+void send_new_pulse(unsigned int pin);
 
-
-bool risingEdge(unsigned int pc){
-    if(gpio_check_and_clear_event(ECHO_RISING_PIN)){
-        start_time = timer_get_ticks();
+bool risingEdge_1(unsigned int pc){
+    if(gpio_check_and_clear_event(ECHO_RISING_PIN_1)){
+        start_time_1 = timer_get_ticks();
         return true;
     }
     return false;
 }
 
 
-bool fallingEdge(unsigned int pc){
-    if(gpio_check_and_clear_event(ECHO_FALLING_PIN)){
-        end_time = timer_get_ticks();
-        distance = (end_time - start_time) / 149;
+bool fallingEdge_1(unsigned int pc){
+    if(gpio_check_and_clear_event(ECHO_FALLING_PIN_1)){
+        end_time_1 = timer_get_ticks();
+        distance_1 = (end_time_1 - start_time_1) / 149;
         
-        gpio_write(TRIGGER, 1);
-        timer_delay_us(10);
-        gpio_write(TRIGGER, 0);
+        send_new_pulse(TRIGGER_1);
 
         return true;
     }
     return false;
+}
+
+
+
+bool risingEdge_2(unsigned int pc){
+    if(gpio_check_and_clear_event(ECHO_RISING_PIN_2)){
+        start_time_2 = timer_get_ticks();
+        return true;
+    }
+    return false;
+}
+
+
+bool fallingEdge_2(unsigned int pc){
+    if(gpio_check_and_clear_event(ECHO_FALLING_PIN_2)){
+        end_time_2 = timer_get_ticks();
+        distance_2 = (end_time_2 - start_time_2) / 149;
+        
+        send_new_pulse(TRIGGER_2);
+
+        return true;
+    }
+    return false;
+}
+
+void send_new_pulse(unsigned int pin){
+    gpio_write(pin, 1);
+    timer_delay_us(10);
+    gpio_write(pin, 0);
 }
 
 void interrupts_init(void){
-   gpio_enable_event_detection(ECHO_RISING_PIN, GPIO_DETECT_RISING_EDGE);
-   gpio_enable_event_detection(ECHO_FALLING_PIN, GPIO_DETECT_FALLING_EDGE);
+   gpio_enable_event_detection(ECHO_RISING_PIN_1, GPIO_DETECT_RISING_EDGE);
+   gpio_enable_event_detection(ECHO_FALLING_PIN_1, GPIO_DETECT_FALLING_EDGE);
    
-   interrupts_attach_handler(risingEdge);
-   interrupts_attach_handler(fallingEdge);
+   interrupts_attach_handler(risingEdge_1);
+   interrupts_attach_handler(fallingEdge_1);
+
+
+   gpio_enable_event_detection(ECHO_RISING_PIN_2, GPIO_DETECT_RISING_EDGE);
+   gpio_enable_event_detection(ECHO_FALLING_PIN_2, GPIO_DETECT_FALLING_EDGE);
+   
+   interrupts_attach_handler(risingEdge_2);
+   interrupts_attach_handler(fallingEdge_2);
 
    interrupts_enable_source(INTERRUPTS_GPIO3);
 
@@ -90,22 +112,29 @@ void main(void) {
     uart_init();
     interrupts_init();
 
-  	gpio_set_output(TRIGGER);
-  	gpio_set_input(ECHO_RISING_PIN);
-  	gpio_set_pulldown(ECHO_RISING_PIN);
+  	gpio_set_output(TRIGGER_1);
+  	gpio_set_input(ECHO_RISING_PIN_1);
+  	gpio_set_pulldown(ECHO_RISING_PIN_1);
 
-    gpio_set_input(ECHO_FALLING_PIN);
-    gpio_set_pulldown(ECHO_FALLING_PIN);
+    gpio_set_input(ECHO_FALLING_PIN_1);
+    gpio_set_pulldown(ECHO_FALLING_PIN_1);
+
+  	gpio_set_output(TRIGGER_2);
+  	gpio_set_input(ECHO_RISING_PIN_2);
+  	gpio_set_pulldown(ECHO_RISING_PIN_2);
+
+    gpio_set_input(ECHO_FALLING_PIN_2);
+    gpio_set_pulldown(ECHO_FALLING_PIN_2);
 	timer_delay_ms(40);
 
-    gpio_write(TRIGGER, 1);
-    timer_delay_us(10);
-    gpio_write(TRIGGER, 0);
+    send_new_pulse(TRIGGER_1);
+    send_new_pulse(TRIGGER_2);
 
   	while(1) {
 		//unsigned int distance = get_distance();
        // if( distance <= 50 ) {
-            printf("distance = %d inches\n", distance);
+            printf("distance_1 = %d inches\n", distance_1);
+            printf("distance_2 = %d inches\n\n", distance_2);
             timer_delay_ms(250);
        // }
 	}
