@@ -25,11 +25,12 @@ unsigned int get_distance(void) {
 	timer_delay_us(10);
 	gpio_write(trigger, 0);
 
-	unsigned start = timer_get_ticks();
-	timer_delay_us(149); // wait til device settles: 148 = time to go one inch
+	//unsigned start = timer_get_ticks();
+	//timer_delay_us(149); // wait til device settles: 148 = time to go one inch
 	while(!gpio_read(echo))
 		;
 
+    unsigned start = timer_get_ticks();
 	unsigned end;
 	while(gpio_read(echo) == 1)
 		;
@@ -51,9 +52,9 @@ void main(void) {
 
   	while(1) {
 		unsigned int distance = get_distance();
-        if( distance <= 50 ) {
+       // if( distance <= 50 ) {
             printf("distance = %d inches\n", distance);
             timer_delay_ms(250);
-        }
+       // }
 	}
 }

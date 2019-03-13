@@ -43,7 +43,7 @@ all : $(NAME).bin $(MY_MODULES)
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: tests/test_ultra.bin
+test: tests/test_ultra_interrupts.bin
 	rpi-install.py -p $<
 
 clean:
