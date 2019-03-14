@@ -7,7 +7,7 @@ NAME = main
 # reference module will be used instead (no system bonus, though)
 #
 # *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = 
+MY_MODULES = ultrasound.o 
 #= shoot.o
 #timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o 
 
