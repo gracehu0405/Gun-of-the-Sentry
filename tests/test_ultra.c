@@ -26,7 +26,7 @@ unsigned int get_distance(void) {
 	gpio_write(trigger, 0);
 
 	//unsigned start = timer_get_ticks();
-	//timer_delay_us(149); // wait til device settles: 148 = time to go one inch
+	timer_delay_us(149); // wait til device settles: 148 = time to go one inch
 	while(!gpio_read(echo))
 		;
 
