@@ -23,19 +23,8 @@ static volatile unsigned start_times[NUM_SENSORS];
 static volatile unsigned end_times[NUM_SENSORS];
 static volatile unsigned int distances[NUM_SENSORS];
 
-/*unsigned start_time_0 = 0;
-unsigned end_time_0 = 0;
-unsigned int distance_0 = 0;
-
-unsigned start_time_1 = 0;
-unsigned end_time_1 = 0;
-unsigned int distance_1 = 0;
-
-unsigned start_time_2 = 0;
-unsigned end_time_2 = 0;
-unsigned int distance_2 = 0;*/
-
 static void send_new_pulse(unsigned int pin);
+
 
 bool risingEdge_0(unsigned int pc){
     if(gpio_check_and_clear_event(ECHO_RISING_PIN_0)){
@@ -51,7 +40,16 @@ bool fallingEdge_0(unsigned int pc){
         end_times[0] = timer_get_ticks();
         distances[0] = (end_times[0] - start_times[0]) / 149;
         
-        send_new_pulse(TRIGGER_0);
+        // disable sensor 0
+        gpio_disable_event_detection(ECHO_RISING_PIN_0, GPIO_DETECT_RISING_EDGE);
+        gpio_disable_event_detection(ECHO_FALLING_PIN_0, GPIO_DETECT_FALLING_EDGE);
+
+        // enable sensor 1 
+        gpio_enable_event_detection(ECHO_RISING_PIN_1, GPIO_DETECT_RISING_EDGE);
+        gpio_enable_event_detection(ECHO_FALLING_PIN_1, GPIO_DETECT_FALLING_EDGE);
+
+        // send out sensor 1 pulse 
+        send_new_pulse(TRIGGER_1);
 
         return true;
     }
@@ -73,7 +71,16 @@ bool fallingEdge_1(unsigned int pc){
         end_times[1] = timer_get_ticks();
         distances[1] = (end_times[1] - start_times[1]) / 149;
         
-        send_new_pulse(TRIGGER_1);
+        // disable sensor 1
+        gpio_disable_event_detection(ECHO_RISING_PIN_1, GPIO_DETECT_RISING_EDGE);
+        gpio_disable_event_detection(ECHO_FALLING_PIN_1, GPIO_DETECT_FALLING_EDGE);
+
+        // enable sensor 2
+        gpio_enable_event_detection(ECHO_RISING_PIN_2, GPIO_DETECT_RISING_EDGE);
+        gpio_enable_event_detection(ECHO_FALLING_PIN_2, GPIO_DETECT_FALLING_EDGE);
+
+        // send out sensor 2 pulse 
+        send_new_pulse(TRIGGER_2);
 
         return true;
     }
@@ -93,8 +100,17 @@ bool fallingEdge_2(unsigned int pc){
     if(gpio_check_and_clear_event(ECHO_FALLING_PIN_2)){
         end_times[2] = timer_get_ticks();
         distances[2] = (end_times[2] - start_times[2]) / 149;
-        
-        send_new_pulse(TRIGGER_2);
+
+        // disable sensor 2
+        gpio_disable_event_detection(ECHO_RISING_PIN_2, GPIO_DETECT_RISING_EDGE);
+        gpio_disable_event_detection(ECHO_FALLING_PIN_2, GPIO_DETECT_FALLING_EDGE);
+
+        // enable sensor 0
+        gpio_enable_event_detection(ECHO_RISING_PIN_0, GPIO_DETECT_RISING_EDGE);
+        gpio_enable_event_detection(ECHO_FALLING_PIN_0, GPIO_DETECT_FALLING_EDGE);
+
+        // send out sensor 0 pulse 
+        send_new_pulse(TRIGGER_0);
 
         return true;
     }
@@ -115,14 +131,14 @@ static void interrupts_init(void){
    interrupts_attach_handler(fallingEdge_0);
 
 
-   gpio_enable_event_detection(ECHO_RISING_PIN_1, GPIO_DETECT_RISING_EDGE);
-   gpio_enable_event_detection(ECHO_FALLING_PIN_1, GPIO_DETECT_FALLING_EDGE);
+  // gpio_enable_event_detection(ECHO_RISING_PIN_1, GPIO_DETECT_RISING_EDGE);
+  // gpio_enable_event_detection(ECHO_FALLING_PIN_1, GPIO_DETECT_FALLING_EDGE);
    
    interrupts_attach_handler(risingEdge_2);
    interrupts_attach_handler(fallingEdge_2);
 
-   gpio_enable_event_detection(ECHO_RISING_PIN_2, GPIO_DETECT_RISING_EDGE);
-   gpio_enable_event_detection(ECHO_FALLING_PIN_2, GPIO_DETECT_FALLING_EDGE);
+//   gpio_enable_event_detection(ECHO_RISING_PIN_2, GPIO_DETECT_RISING_EDGE);
+ //  gpio_enable_event_detection(ECHO_FALLING_PIN_2, GPIO_DETECT_FALLING_EDGE);
    
    interrupts_attach_handler(risingEdge_1);
    interrupts_attach_handler(fallingEdge_1);
@@ -156,9 +172,9 @@ void ultraSound_init(void){
 
 	timer_delay_ms(40);
 
-    send_new_pulse(TRIGGER_0);
-    send_new_pulse(TRIGGER_1);
-    send_new_pulse(TRIGGER_2);
+      send_new_pulse(TRIGGER_0);
+   // send_new_pulse(TRIGGER_1);
+   // send_new_pulse(TRIGGER_2);
 }
 
 unsigned int getDistance(int pos){
