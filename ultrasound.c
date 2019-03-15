@@ -18,6 +18,7 @@
 #include "interrupts.h"
 #include "ultrasound.h"
 #include "sensormap.h"
+#include "armtimer.h"
 
 
 static volatile unsigned start_times[NUM_SENSORS];
@@ -32,6 +33,12 @@ static void send_new_pulse(unsigned int pin);
 bool risingEdge(unsigned int pc){
     if(gpio_check_and_clear_event(sensor_array[currSensorNum].echo_rising_pin)){
         start_times[currSensorNum] = timer_get_ticks();
+        
+        // start a new countdown
+        armtimer_init(TIMEOUT);
+        armtimer_enable_interrupts();
+        armtimer_enable(); 
+
         return true;
     }
     return false;
@@ -40,8 +47,14 @@ bool risingEdge(unsigned int pc){
 
 bool fallingEdge(unsigned int pc){
     if(gpio_check_and_clear_event(sensor_array[currSensorNum].echo_falling_pin)){
+
+        // Stop the timer
+        armtimer_disable_interrupts();
+        armtimer_disable();
+        armtimer_clear_event();
+
         end_times[currSensorNum] = timer_get_ticks();
-        distances[currSensorNum] = (end_times[currSensorNum] - start_times[currSensorNum]) / 149;
+        distances[currSensorNum] = (end_times[currSensorNum] - start_times[currSensorNum]) / INCH_CONVERSION;
 
         // disable the current sensor
         gpio_disable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
@@ -53,9 +66,43 @@ bool fallingEdge(unsigned int pc){
         // enable the next sensor
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
-
-        // send out a the next sensor pulse 
+        
+        // send out the next sensor pulse 
         send_new_pulse(sensor_array[currSensorNum].trigger);
+
+        return true;
+    }
+    return false;
+}
+
+
+bool timeout_handler(unsigned int pc){
+    if(armtimer_check_and_clear_interrupt()){
+
+        // Stop the timer
+        armtimer_disable_interrupts();
+        armtimer_disable();
+
+        // Set the distance to be the maximum
+        distances[currSensorNum] = MAX_RANGE;
+
+        // disable the current sensor
+        gpio_disable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
+        gpio_disable_event_detection(sensor_array[currSensorNum].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
+
+        // clear any events
+        gpio_clear_event(sensor_array[currSensorNum].echo_rising_pin);
+        gpio_clear_event(sensor_array[currSensorNum].echo_falling_pin);
+
+        // Advance to the next sensor
+        currSensorNum = ((currSensorNum + 1) % NUM_SENSORS);
+
+        // enable the next sensor
+        gpio_enable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
+        gpio_enable_event_detection(sensor_array[currSensorNum].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
+
+        // send out the next sensor pulse 
+        send_new_pulse(sensor_array[currSensorNum].trigger); 
 
         return true;
     }
@@ -71,11 +118,15 @@ static void send_new_pulse(unsigned int pin){
 static void interrupts_init(void){
     gpio_enable_event_detection(sensor_array[0].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
     gpio_enable_event_detection(sensor_array[0].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
+    
+    interrupts_enable_basic(INTERRUPTS_BASIC_ARM_TIMER_IRQ);
 
     interrupts_attach_handler(risingEdge);
     interrupts_attach_handler(fallingEdge);
+    interrupts_attach_handler(timeout_handler);
 
     interrupts_enable_source(INTERRUPTS_GPIO3);
+
     interrupts_global_enable();
 }
 
@@ -92,7 +143,10 @@ void ultraSound_init(void){
     }
 
     timer_delay_ms(40);
-    send_new_pulse(sensor_array[0].trigger);
+
+    // send the very first pulse
+    send_new_pulse(sensor_array[0].trigger); 
+
 }
 
 unsigned int getDistance(int pos){

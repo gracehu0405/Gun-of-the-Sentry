@@ -11,6 +11,9 @@
  */
 
 
+#define INCH_CONVERSION 149
+#define MAX_RANGE 79
+#define TIMEOUT (MAX_RANGE * INCH_CONVERSION)
 
 // Initialize the ultrasound modules
 void ultraSound_init(void);
