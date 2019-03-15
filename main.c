@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "timer.h"
 #include "gun.h"
+#include "gpio.h"
 
 
 
