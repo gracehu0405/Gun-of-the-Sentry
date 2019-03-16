@@ -36,5 +36,9 @@ void rotate_counter_clockwise(void);
 /* Hold the gun still */
 void rotator_off(void);
 
+/* Fire x bullets */ 
+// TODO: check time to shoot 1 bullet
+void fire_once(void);
+
 
 #endif

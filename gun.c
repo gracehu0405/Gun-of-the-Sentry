@@ -13,6 +13,7 @@
 
 #include "gun.h"
 #include "gpio.h"
+#include "timer.h"
 
 
 void gun_init(void){
@@ -39,22 +40,28 @@ void trigger_off(void){
 
 // check directions
 void rotate_clockwise(void){
-  gpio_write(ROTATOR_POS, 0);
-  gpio_write(ROTATOR_NEG, 1);
+  gpio_write(ROTATOR_POS, 1);
+  gpio_write(ROTATOR_NEG, 0);
 
 }
 
 
 // check directions
 void rotate_counter_clockwise(void){
-  gpio_write(ROTATOR_POS, 1);
-  gpio_write(ROTATOR_NEG, 0);
+  gpio_write(ROTATOR_POS, 0);
+  gpio_write(ROTATOR_NEG, 1);
 
 }
 
 void rotator_off(void){
   gpio_write(ROTATOR_POS, 1);
   gpio_write(ROTATOR_NEG, 1);
+}
+
+void fire_once(void){
+   trigger_on();
+   timer_delay(3);
+   trigger_off();
 }
 
 
