@@ -165,5 +165,5 @@ int smallestDistance(void) {
       index = i;
     }
   }
-  return i;
+  return index;
 }
