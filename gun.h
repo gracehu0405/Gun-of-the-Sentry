@@ -10,6 +10,7 @@
  *
  */
 
+enum gun_mode{ AUTO = 0, INTERACTIVE = 1 };
 
 enum gun_pins{
     ROTATOR_POS = GPIO_PIN16,

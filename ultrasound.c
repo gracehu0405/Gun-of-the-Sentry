@@ -26,6 +26,7 @@ static volatile unsigned end_times[NUM_SENSORS];
 static volatile unsigned int distances[NUM_SENSORS];
 
 static unsigned int currSensorNum = 0;
+static unsigned int closestIndex = 0;
 
 static void send_new_pulse(unsigned int pin);
 
@@ -55,6 +56,8 @@ bool fallingEdge(unsigned int pc){
 
         end_times[currSensorNum] = timer_get_ticks();
         distances[currSensorNum] = (end_times[currSensorNum] - start_times[currSensorNum]) / INCH_CONVERSION;
+
+        if(distances[currSensorNum] < distances[closestIndex]) closestIndex = currSensorNum; // O(1)
 
         // disable the current sensor
         gpio_disable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
@@ -149,8 +152,8 @@ void ultraSound_init(void){
 
 }
 
-unisgned int middleSensor(void) {
-  return ((NUM_SENSORS/2) + 1);
+unsigned int middleSensor(void) {
+    return NUM_SENSORS/2; 
 }
 
 unsigned int getDistance(int pos){
@@ -160,14 +163,17 @@ unsigned int getDistance(int pos){
     return distances[pos];
 }
 
-int closestSensor(void) {
-  int curDistance = MAX_RANGE;
-  int index = -1;
-  for(int i = 0; i < NUM_SENSORS; i++){
-    if(getDistance(i)<= curDistance) {
-      curDistance = getDistance(i);
-      index = i;
+
+unsigned int closestSensor(void) {
+
+    return closestIndex;
+   /* int curDistance = MAX_RANGE;
+    int index = -1;
+    for(int i = 0; i < NUM_SENSORS; i++){
+        if(getDistance(i)<= curDistance) {
+            curDistance = getDistance(i);
+            index = i;
+        }
     }
-  }
-  return index;
+    return index;*/
 }

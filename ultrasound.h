@@ -18,11 +18,11 @@
 // Initialize the ultrasound modules
 void ultraSound_init(void);
 
-//Returns middle sensor, assumes odd number of sensors
+// Returns array index of middle sensor
 unsigned int middleSensor(void);
 
 // Returns index of sensor with smallest distance, -1 if no signals below threshold
-int closestSensor(void);
+unsigned int closestSensor(void);
 
 // (Temporary) function to return distance - do bounds error checking
 unsigned int getDistance(int pos);
