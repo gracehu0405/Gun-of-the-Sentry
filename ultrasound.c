@@ -156,12 +156,14 @@ unsigned int getDistance(int pos){
     return distances[pos];
 }
 
-unsigned int smallestDistance(void) {
+int smallestDistance(void) {
   int curDistance = MAX_RANGE;
+  int index = -1;
   for(int i = 0; i < NUM_SENSORS; i++){
     if(getDistance(i)<= curDistance) {
       curDistance = getDistance(i);
+      index = i;
     }
   }
-  return curDistance;
+  return i;
 }
