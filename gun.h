@@ -1,6 +1,8 @@
 #ifndef GUN_H
 #define GUN_H
 
+#include "gpio.h"
+
 /* Functions for controlling and operating the gun 
  *
  * Authors: Michael Oduoza, Steffi Andersen, Grace Hu
@@ -9,22 +11,14 @@
  */
 
 
-enum gun_mode {INTERACTIVE = 0, AUTO = 1};
+enum gun_pins{
+    ROTATOR_POS = GPIO_PIN16,
+    ROTATOR_NEG = GPIO_PIN20,
+    GUN_TRIGGER = GPIO_PIN21,
+};
 
-//static int mode; // check need for this?
-
-
-/* Initialize the gun for operation in the given mode */
-void gun_init(int mode_num);
-
-
-/* Get the current mode of operation. Can be 
- * a) INTERACTIVE - user controlled
- * b) AUTO- autonomous operation and automatic aiming
- *
- * @ return - the current mode of operation
- */
-int get_gun_mode(void);
+/* Initialize the gun for operation */
+void gun_init(void);
 
 /* Turn the trigger on (fires the gun) */
 void trigger_on(void);
