@@ -149,6 +149,10 @@ void ultraSound_init(void){
 
 }
 
+unisgned int middleSensor(void) {
+  return ((NUM_SENSORS/2) + 1);
+}
+
 unsigned int getDistance(int pos){
     // Out of bounds
     if(pos > (NUM_SENSORS - 1)) return -1;

@@ -25,18 +25,17 @@ enum pins {
   ECHO_RISING_PIN_2 = GPIO_PIN9,
   ECHO_FALLING_PIN_2 = GPIO_PIN11,
 
-  // Add more triggers, rising, and falling edges 
+  // Add more triggers, rising, and falling edges
 };
 
 // Number of sensors being utilized
 #define NUM_SENSORS 3
 
-
 /** STRUCT: ultrasonic_sensor_t
  *
  * Each standard HC-SR04 ultrasonic sensor has one trigger pin
  * and one echo pin. We create two enrties for the echo pin,
- * to be able to independently detect both rising and falling edges 
+ * to be able to independently detect both rising and falling edges
  * on the pin.
  */
 typedef struct {
@@ -46,5 +45,5 @@ typedef struct {
  } ultrasonic_sensor_t;
 
 extern ultrasonic_sensor_t const sensor_array[NUM_SENSORS];
- 
+
 #endif
