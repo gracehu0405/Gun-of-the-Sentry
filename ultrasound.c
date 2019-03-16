@@ -1,11 +1,11 @@
-/* 
+/*
  * File: ultrasound.c
  * -------------------
  *
  * Authors: Michael Oduoza, Steffi Andersen, Grace Hu
  * Date: Thursday March 14th, 2019
  *
- * Implementation of standard functions defined in ultrasound.h for 
+ * Implementation of standard functions defined in ultrasound.h for
  * initializing and reading the output of HC-SRO4 sensor modules.
  * Contains an interrupts mechanism that allows the sensors to periodically
  * keep track of the range of objects in their vicinity.
@@ -33,11 +33,11 @@ static void send_new_pulse(unsigned int pin);
 bool risingEdge(unsigned int pc){
     if(gpio_check_and_clear_event(sensor_array[currSensorNum].echo_rising_pin)){
         start_times[currSensorNum] = timer_get_ticks();
-        
+
         // start a new countdown
         armtimer_init(TIMEOUT);
         armtimer_enable_interrupts();
-        armtimer_enable(); 
+        armtimer_enable();
 
         return true;
     }
@@ -66,8 +66,8 @@ bool fallingEdge(unsigned int pc){
         // enable the next sensor
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
-        
-        // send out the next sensor pulse 
+
+        // send out the next sensor pulse
         send_new_pulse(sensor_array[currSensorNum].trigger);
 
         return true;
@@ -101,8 +101,8 @@ bool timeout_handler(unsigned int pc){
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
         gpio_enable_event_detection(sensor_array[currSensorNum].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
 
-        // send out the next sensor pulse 
-        send_new_pulse(sensor_array[currSensorNum].trigger); 
+        // send out the next sensor pulse
+        send_new_pulse(sensor_array[currSensorNum].trigger);
 
         return true;
     }
@@ -118,7 +118,7 @@ static void send_new_pulse(unsigned int pin){
 static void interrupts_init(void){
     gpio_enable_event_detection(sensor_array[0].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
     gpio_enable_event_detection(sensor_array[0].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
-    
+
     interrupts_enable_basic(INTERRUPTS_BASIC_ARM_TIMER_IRQ);
 
     interrupts_attach_handler(risingEdge);
@@ -145,15 +145,23 @@ void ultraSound_init(void){
     timer_delay_ms(40);
 
     // send the very first pulse
-    send_new_pulse(sensor_array[0].trigger); 
+    send_new_pulse(sensor_array[0].trigger);
 
 }
 
 unsigned int getDistance(int pos){
-    // Out of bounds  
+    // Out of bounds
     if(pos > (NUM_SENSORS - 1)) return -1;
 
-    return distances[pos];    
+    return distances[pos];
 }
 
-
+unsigned int smallestDistance(void) {
+  int curDistance = MAX_RANGE;
+  for(int i = 0; i < NUM_SENSORS; i++){
+    if(smallestDistance(i)<= curDistance) {
+      curDistance = smallestDistance(i);
+    }
+  }
+  return curDistance;
+}
