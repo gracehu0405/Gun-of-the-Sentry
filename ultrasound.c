@@ -156,7 +156,7 @@ unsigned int getDistance(int pos){
     return distances[pos];
 }
 
-int smallestDistance(void) {
+int closestSensor(void) {
   int curDistance = MAX_RANGE;
   int index = -1;
   for(int i = 0; i < NUM_SENSORS; i++){

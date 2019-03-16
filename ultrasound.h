@@ -19,9 +19,8 @@
 void ultraSound_init(void);
 
 
-// Add function to get smallest distance- returns index of sensor with smallest distance
-//returns -1 if no signals below threshold
-int smallestDistance(void);
+// Returns index of sensor with smallest distance, -1 if no signals below threshold
+int closestSensor(void);
 
 // (Temporary) function to return distance - do bounds error checking
 unsigned int getDistance(int pos);
