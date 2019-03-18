@@ -29,26 +29,34 @@
 #define _NCOLS	20 // 50
 
 static void write_text(void) {
-    
-    // Black background, white text
-    // gl_clear(GL_BLACK);
 
     // Top left: Mode
-    gl_draw_string(60, 100, "Mode:", GL_GREEN);
-    gl_draw_string(80, 60, "Auto/Interactive", GL_GREEN);
+    gl_draw_string(10, 105, "Mode:", GL_GREEN);
+    gl_draw_string(20, 125, "A/I", GL_GREEN);
+
+    // gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
+    gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+
 
     // Top right: Remaining Darts
-    gl_draw_rect(_WIDTH - 100, 100, 50, 50, GL_WHITE); // square
-    gl_draw_string(_WIDTH - 150, 100, "darts remaining", GL_GREEN);
+    gl_draw_rect(430, 95, 20, 20, GL_WHITE); // square
+    gl_draw_string(435, 98, "8", GL_BLUE);
+    gl_draw_string(410, 120, "Darts", GL_GREEN);
+    gl_draw_string(415, 140, "Left", GL_GREEN);
 
-    // Bottom Center: 
-    gl_draw_string(_WIDTH/2 - 80, _HEIGHT/2, "Locked down target!", GL_BLUE);
-    gl_draw_string(_WIDTH/2 - 160, _HEIGHT/2 + 40, "Target Distance: N in away", GL_BLUE);
-    gl_draw_string(_WIDTH - 80, _HEIGHT - 40, "Firing Darts!", GL_BLUE);
+    // Bottom Center: Display info 
+    gl_draw_string(110, _HEIGHT/2, "Locked down target!", GL_CYAN);
+    gl_draw_string(60, _HEIGHT/2 + 40, "Target Distance: 9 in away", GL_CYAN);
+    gl_draw_rect(_WIDTH/2 - 26, _HEIGHT/2 + 60, 16, 3, GL_BLUE); // Underline the number
+    gl_draw_string(145, _HEIGHT/2 + 80, "Firing Darts!", GL_CYAN);
 
+    // Target symbol
+    gl_draw_triangle(250, 100, 245, 110, 255, 110, GL_RED);
+    gl_draw_triangle(250, 114, 245, 104, 255, 104, GL_RED);
+
+
+    // Display screen
     gl_swap_buffer();
-    printf("\nSwap buffer finished");
+    printf("\nSwap buffer finished\n");
 
-    timer_delay(3);
-    gl_clear(GL_BLACK);    
 }

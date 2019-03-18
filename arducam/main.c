@@ -64,8 +64,9 @@ void main(void) {
     init_peripherals();
 
     while(1) {
-	// capture_image(); // Arducam
+	capture_image(); // Arducam
 	write_text(); // Run Graphics
+	// timer_delay(1);
     }
 }
 
