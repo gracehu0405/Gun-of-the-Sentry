@@ -17,6 +17,7 @@
 #include "uart.h"
 #include "gl.h"
 #include "printf.h"
+#include "graphics.c"
 
 // size of the image coming in
 #define WIDTH   320 // 320
@@ -63,8 +64,8 @@ void main(void) {
     init_peripherals();
 
     while(1) {
-	capture_image(); // Arducam
-	// draw_graphics(); // Run Graphics
+	// capture_image(); // Arducam
+	write_text(); // Run Graphics
     }
 }
 

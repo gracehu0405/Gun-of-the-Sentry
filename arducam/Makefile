@@ -1,5 +1,5 @@
 NAME = main
-MODULES = arducam.o omni.o spi.o i2c.o
+MODULES = arducam.o graphics.o omni.o spi.o i2c.o
 
 CFLAGS = -I$(CS107E)/include -g -Wall -Og -std=c99 -ffreestanding
 LDFLAGS = -nostdlib -T memmap -L$(CS107E)/lib
