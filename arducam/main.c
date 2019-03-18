@@ -47,7 +47,7 @@ void init_peripherals(void) {
 	unsigned graphics_height = HEIGHT*3/2;
 	unsigned image_start = graphics_width/2 - WIDTH/2;
 	
-	//initailize graphics
+	//initialize graphics
 	gl_init(graphics_width, graphics_height, GL_DOUBLEBUFFER);
 
 	//start up the camera, set the start of the image's top left corner in the 
@@ -59,12 +59,12 @@ void init_peripherals(void) {
 /* 
  * comtinuously capture images
  */
-void main(void)
-{	
-	init_peripherals();
+void main(void) {	
+    init_peripherals();
 
-	while(1) {
-        capture_image();
+    while(1) {
+	capture_image(); // Arducam
+	// draw_graphics(); // Run Graphics
     }
 }
 

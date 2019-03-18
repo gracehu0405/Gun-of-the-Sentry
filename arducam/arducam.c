@@ -103,12 +103,12 @@ void get_pixels(unsigned char *rgb)
   rgb[2] = b;
 }
 
-//Displays the current camera image to the screen. Does not store the image
+// Displays the current camera image to the screen. Does not store the image
 void print_image(void)
 {
   unsigned char rgb[3];
   for (int i=cam.y; i < cam.h; i++) {
-  	if(cam.x == 0) {
+  	if (cam.x == 0) {
 	    for (int j=cam.w-1; j >= 0; j--) {
 	      get_pixels(rgb);
 	      gl_draw_pixel(j, i, gl_color(rgb[0],rgb[1],rgb[2]));
