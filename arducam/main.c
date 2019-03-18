@@ -19,14 +19,14 @@
 #include "printf.h"
 
 // size of the image coming in
-#define WIDTH   320
-#define HEIGHT  240
+#define WIDTH   320 // 320
+#define HEIGHT  240 // 240
 
 // size of the console, values too large get trimmed later
-#define CONSOLE_ROWS	20
-#define CONSOLE_COLS	50
+#define CONSOLE_ROWS	20 // 20
+#define CONSOLE_COLS	50 // 50
 
-//center the image on the screen? 
+// center the image on the screen? 
 #define CENTERED	1
 
 #define IMAGE_CAPTURE 0
