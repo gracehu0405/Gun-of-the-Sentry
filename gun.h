@@ -3,7 +3,7 @@
 
 #include "gpio.h"
 
-/* Functions for controlling and operating the gun 
+/* Functions for controlling and operating the gun
  *
  * Authors: Michael Oduoza, Steffi Andersen, Grace Hu
  * Date: Sunday March 10th, 2019
@@ -36,7 +36,7 @@ void rotate_counter_clockwise(void);
 /* Hold the gun still */
 void rotator_off(void);
 
-/* Fire x bullets */ 
+/* Fire x bullets */
 // TODO: check time to shoot 1 bullet
 void fire_once(void);
 

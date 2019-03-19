@@ -21,7 +21,7 @@ void main(void){
     shell_init(printf);
     keyboard_init(KEYBOARD_CLOCK, KEYBOARD_DATA);
 
-    int mode = welcome_user_and_get_mode(); 
+    int mode = welcome_user_and_get_mode();
 
     if(mode == AUTO){
         printf("\nNow in Auto mode...\n");
@@ -29,29 +29,29 @@ void main(void){
         int middleIndex = middleSensor();
 
         while(1) {
-           // printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
+            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
            // timer_delay_ms(250);
-            
+
             int smallestIndex = closestSensor();
             if(smallestIndex < middleIndex){
                 rotate_clockwise();
             } else if(smallestIndex > middleIndex){
                 rotate_counter_clockwise();
             }
-
+            //printf("%d\n", getDistance(closestSensor()));
             while(closestSensor() != middleIndex){}
             rotator_off();
 
             //TODO: make get smallest distance a function
             if(getDistance(closestSensor()) < MAX_RANGE){
-               // fire_once();
-               trigger_on();
+                fire_once();
+                //trigger_on();
             }
 
-            while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
-            trigger_off();
+             while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
+            // trigger_off();
         }
-        // User interactive mode    
+        // User interactive mode
     } else {
         interactive_mode();
     }
@@ -108,6 +108,3 @@ static void interactive_mode(void){
         rotator_off();
     }
 }
-
-
-

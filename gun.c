@@ -1,4 +1,4 @@
-/* 
+/*
  * File: gun.c
  * -------------------
  *
@@ -60,9 +60,6 @@ void rotator_off(void){
 
 void fire_once(void){
    trigger_on();
-   timer_delay(3);
+   timer_delay_ms(333);
    trigger_off();
 }
-
-
-

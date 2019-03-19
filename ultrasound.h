@@ -12,7 +12,7 @@
 
 
 #define INCH_CONVERSION 149
-#define MAX_RANGE 10
+#define MAX_RANGE 150
 #define TIMEOUT (MAX_RANGE * INCH_CONVERSION)
 
 // Initialize the ultrasound modules
