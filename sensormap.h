@@ -21,8 +21,8 @@ enum pins {
   ECHO_RISING_PIN_1 = GPIO_PIN27,
   ECHO_FALLING_PIN_1 = GPIO_PIN22,
 
-  TRIGGER_2 = GPIO_PIN10,
-  ECHO_RISING_PIN_2 = GPIO_PIN9,
+  TRIGGER_2 = GPIO_PIN19, //moved from 10
+  ECHO_RISING_PIN_2 = GPIO_PIN26, //moved from 9
   ECHO_FALLING_PIN_2 = GPIO_PIN11,
 
   // Add more triggers, rising, and falling edges

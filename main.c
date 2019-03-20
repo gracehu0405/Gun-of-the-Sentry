@@ -9,6 +9,7 @@
 #include "strings.h"
 
 #define LINE_LEN 80
+#define KEYBOARD_CLOCK_NEW GPIO_PIN12
 
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
@@ -19,7 +20,7 @@ void main(void){
     gpio_init();
     gun_init();
     shell_init(printf);
-    keyboard_init(KEYBOARD_CLOCK, KEYBOARD_DATA);
+    keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
     int mode = welcome_user_and_get_mode();
 
