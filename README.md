@@ -21,7 +21,7 @@ The nerf gun is mounted on a rotating platform.  3D printed arms hold the gun, a
 ## Arducam
 
 ## Breakdown
-Michael: Sensors, interrupts, wiring, mode switching, sensor map, trigger mechanism
+Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism
 
 Grace: Arducam, graphics, building base, calibrating shooting, gun stability
 
