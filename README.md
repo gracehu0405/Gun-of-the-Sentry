@@ -4,7 +4,7 @@
 Michael Oduoza, Grace Hu, Steffi Andersen
 
 ## Overview
-The goal of a project was to develop an **automated nerf gun** that can **track a target** and **capture video.**.   The gun can be operated using two modes: “auto” and “interactive.”
+The goal of a project was to develop an **automated nerf gun** that can **track a target** and **capture video.**   The gun can be operated using two modes: “auto” and “interactive.”
 
 Auto mode uses the sensors to track the target, while interactive mode allows the user to control the gun with a keyboard.
 
