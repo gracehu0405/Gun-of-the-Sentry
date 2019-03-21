@@ -1,4 +1,4 @@
-NAME = main
+NAME = graphics_tests
 
 # This is the list of your modules that will be used when
 # buliding the console application and libmypi.a library
@@ -7,9 +7,9 @@ NAME = main
 # reference module will be used instead (no system bonus, though)
 #
 # *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o
+MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o graphics_tests.o
 #= shoot.o
-#timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o
+#timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o graphics_tests.o
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding

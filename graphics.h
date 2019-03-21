@@ -11,11 +11,7 @@
 #define _WIDTH   640 // 320
 #define _HEIGHT  512 // 240
 
-// size of the console, values too large get trimmed later
-#define _NROWS	10 // 20
-#define _NCOLS	20 // 50
-
-int num_darts = 18;
+//int num_darts = 18;
 
 /* graphics.h
  * -----
@@ -30,6 +26,6 @@ int num_darts = 18;
  * target is found and when darts are fired, etc.
  */
 
-void graphics_init(void);
+ void graphics_init(void);
 
  void write_text(void);
