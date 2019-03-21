@@ -61,7 +61,8 @@ static void auto_mode(int middleIndex){
         }
 
         while(closestSensor() != middleIndex){}
-        rotator_off();
+        timer_delay_ms(100);
+	rotator_off();
 
         if(getDistance(closestSensor()) < MAX_RANGE){
             fire_once();
