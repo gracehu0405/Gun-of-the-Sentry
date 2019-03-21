@@ -25,21 +25,13 @@ enum pins {
   ECHO_RISING_PIN_2 = GPIO_PIN26, //moved from 9
   ECHO_FALLING_PIN_2 = GPIO_PIN19, //moved from 11
 
-  TRIGGER_3 = GPIO_PIN18,
-  ECHO_RISING_PIN_3 = GPIO_PIN23,
-  ECHO_FALLING_PIN_3 = GPIO_PIN24,
-
-  TRIGGER_4 = GPIO_PIN10, //moved from 10
-  ECHO_RISING_PIN_4 = GPIO_PIN9, //moved from 9
-  ECHO_FALLING_PIN_4 = GPIO_PIN11, //moved from 11
-
 
 
   // Add more triggers, rising, and falling edges
 };
 
 // Number of sensors being utilized
-#define NUM_SENSORS 5
+#define NUM_SENSORS 3
 
 /** STRUCT: ultrasonic_sensor_t
  *
