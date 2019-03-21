@@ -12,7 +12,7 @@
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
-
+#define THRESHOLD 2000000
 
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
@@ -52,7 +52,7 @@ static void auto_mode(int middleIndex){
            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
            timer_delay_ms(250);
            }*/
-
+       // printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
         smallestIndex = closestSensor();
         if(smallestIndex < middleIndex){
             rotate_clockwise();
@@ -60,9 +60,12 @@ static void auto_mode(int middleIndex){
             rotate_counter_clockwise();
         }
 
-        while(closestSensor() != middleIndex){}
-        timer_delay_ms(100);
-	rotator_off();
+        int prev_time = timer_get_ticks();
+        while(closestSensor() != middleIndex){
+           if((timer_get_ticks() - prev_time) > THRESHOLD) break;
+        }
+        timer_delay_ms(300);
+     	rotator_off();
 
         if(getDistance(closestSensor()) < MAX_RANGE){
             fire_once();
