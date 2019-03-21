@@ -13,7 +13,6 @@
  * target is found and when darts are fired, etc.
  */
 
-
 // size of the image coming in
 #define _WIDTH   640 // 320
 #define _HEIGHT  512 // 240
@@ -22,14 +21,19 @@
 #define _NROWS	10 // 20
 #define _NCOLS	20 // 50
 
+extern int mode;
+
 void write_text(void) {
 
     // Top left: Mode
     gl_draw_string(10, 105, "Mode:", GL_GREEN);
     gl_draw_string(20, 125, "A/I", GL_GREEN);
 
-    // gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
-    gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+    if (mode == AUTO) { 
+	gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
+    } else {
+	gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+    }
 
 
     // Top right: Remaining Darts

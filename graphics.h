@@ -5,6 +5,7 @@
 #include "font.h"
 #include "timer.h"
 #include "console.h"
+#include "gun.h"
 
 /* graphics.h
  * -----
