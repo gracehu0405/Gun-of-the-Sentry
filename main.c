@@ -7,12 +7,50 @@
 #include "shell.h"
 #include "keyboard.h"
 #include "strings.h"
+#include "gl.h"
+#include "arducam/arducam.h"
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
 
+#define WIDTH   320 // 320
+#define HEIGHT  240 // 240
+
+// size of the console, values too large get trimmed later
+#define CONSOLE_ROWS	20 // 20
+#define CONSOLE_COLS	50 // 50
+
+// center the image on the screen?
+#define CENTERED	1
+
+#define IMAGE_CAPTURE 0
+#define IMAGE_STREAM  1
+
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
+void init_peripherals(void);
+void capture_image(void);
+void write_text(void);
+
+void init_peripherals(void) {
+    timer_init();
+	timer_delay_ms(100);
+
+	uart_init();
+
+	//set multiplier to 1 for full screen, 2 for half, etc
+	unsigned graphics_width = WIDTH*3/2;
+	unsigned graphics_height = HEIGHT*3/2;
+	unsigned image_start = graphics_width/2 - WIDTH/2;
+
+	//initialize graphics
+	gl_init(graphics_width, graphics_height, GL_DOUBLEBUFFER);
+
+	//start up the camera, set the start of the image's top left corner in the
+	//graphics display. This starts SPI and I2C inside
+	if(CENTERED) arducam_init(WIDTH,HEIGHT,image_start,0);
+	else arducam_init(WIDTH,HEIGHT,0,0);
+}
 
 void main(void){
     uart_init();
@@ -21,6 +59,7 @@ void main(void){
     gun_init();
     shell_init(printf);
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
+    init_peripherals();
 
     int mode = welcome_user_and_get_mode();
 
@@ -30,7 +69,9 @@ void main(void){
         int middleIndex = middleSensor();
 
         while(1) {
-            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
+             capture_image(); // Arducam
+             write_text();
+            //printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
            // timer_delay_ms(250);
 
             int smallestIndex = closestSensor();
@@ -45,7 +86,7 @@ void main(void){
 
             //TODO: make get smallest distance a function
             if(getDistance(closestSensor()) < MAX_RANGE){
-                fire_once();
+                //fire_once();
                 //trigger_on();
             }
 
@@ -84,7 +125,13 @@ static void interactive_mode(void){
 
     printf("\nNow in interactive mode...\n");
     key_event_t evt;
+    // while(1) {
+    //   capture_image(); // Arducam
+    //   write_text();
+    // }
     while(1) {
+        capture_image(); // Arducam
+        write_text();
 
         if(keyboard_read_next() == PS2_KEY_ESC) break;
 

@@ -10,7 +10,7 @@
  * -----
  * Functions for a simple bare metal Raspberry Pi graphics library
  * that draws pixels, text, lines, triangles, and rectangles. Builds
- * on the lower-level framebuffer library fb.[ch] for framebuffer 
+ * on the lower-level framebuffer library fb.[ch] for framebuffer
  * access and configuration; trying to use both fb and gl
  * simultaneously is discouraged.
  *
@@ -28,7 +28,7 @@
 #define _NROWS	10 // 20
 #define _NCOLS	20 // 50
 
-static void write_text(void) {
+void write_text(void) {
 
     // Top left: Mode
     gl_draw_string(10, 105, "Mode:", GL_GREEN);
@@ -44,7 +44,7 @@ static void write_text(void) {
     gl_draw_string(410, 120, "Darts", GL_GREEN);
     gl_draw_string(415, 140, "Left", GL_GREEN);
 
-    // Bottom Center: Display info 
+    // Bottom Center: Display info
     gl_draw_string(110, _HEIGHT/2, "Locked down target!", GL_CYAN);
     gl_draw_string(60, _HEIGHT/2 + 40, "Target Distance: 9 in away", GL_CYAN);
     gl_draw_rect(_WIDTH/2 - 26, _HEIGHT/2 + 60, 16, 3, GL_BLUE); // Underline the number
@@ -57,6 +57,6 @@ static void write_text(void) {
 
     // Display screen
     gl_swap_buffer();
-    printf("\nSwap buffer finished\n");
+    //printf("\nSwap buffer finished\n");
 
 }

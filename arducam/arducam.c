@@ -1,7 +1,7 @@
-/* 
+/*
  * This code brought to you by the rag tag duo of Arjun and Eric! Visit us at
  * our github accounts: https://github.com/arjunvb, https://github.com/efritz09
- * 
+ *
  * Completed on: March 14, 2016
  */
 
@@ -64,15 +64,15 @@ static volatile camera_t cam;
 //Initializes all the required peripherals, checks the comms, and sets the camera_t values
 void arducam_init(unsigned w, unsigned h, unsigned x, unsigned y) {
 	spi_init(POL, PHA, CLKDIV);
-	printf("spi initialized\n");
+	//printf("spi initialized\n");
 
 	i2c_init();
-	printf("i2c initialized\n");
+	//printf("i2c initialized\n");
 
 	if (arducam_check_interface()) {
-		printf("connected to camera!\n");
+		//printf("connected to camera!\n");
 	} else {
-		printf("SPI interface error\n");
+		//printf("SPI interface error\n");
 		return;
 	}
 
@@ -85,7 +85,7 @@ void arducam_init(unsigned w, unsigned h, unsigned x, unsigned y) {
 	cam.x = x;
 	cam.y = y;
 	cam.start = (unsigned*)malloc(h*w);
-	printf("--Camera ready--\n");
+	//printf("--Camera ready--\n");
 }
 
 //gets the next pixel value (2 bytes) from the camera and returns a 3 element array
@@ -149,32 +149,32 @@ void draw_image(void) {
 //calls the commands required to stream the images
 void stream_image(void) {
 	arducam_begin_capture();
-	printf("streaming...\n");
+	//printf("streaming...\n");
 
 	while(!arducam_capture_done());
-	printf("capture done!\n");
+	//printf("capture done!\n");
 
 	print_image();
-	printf("printing\n");
+	//printf("printing\n");
 	gl_swap_buffer();
-	printf("done reading!\n");
+	//printf("done reading!\n");
 }
 
 //calls the commands to capture and display an image
 void capture_image(void) {
 	arducam_begin_capture();
-	printf("beginning capture...\n");
+	//printf("beginning capture...\n");
 
 	while(!arducam_capture_done());
-	printf("capture done!\n");
+	//printf("capture done!\n");
 
 	store_image();
-	printf("image stored, printing...\n");
+	//printf("image stored, printing...\n");
 	draw_image();
-	printf("image drawn\n");
+	//printf("image drawn\n");
 	gl_swap_buffer();
 	draw_image();
-	printf("done reading!\n");
+	//printf("done reading!\n");
 }
 
 

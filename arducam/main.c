@@ -1,7 +1,7 @@
-/* 
+/*
  * This code brought to you by the rag tag duo of Arjun and Eric! Visit us at
  * our github accounts: https://github.com/arjunvb, https://github.com/efritz09
- * 
+ *
  * Completed on: March 14, 2016
  * Arjun Balasingam, Eric Fritz
  * CS 107e, Final Project
@@ -27,7 +27,7 @@
 #define CONSOLE_ROWS	20 // 20
 #define CONSOLE_COLS	50 // 50
 
-// center the image on the screen? 
+// center the image on the screen?
 #define CENTERED	1
 
 #define IMAGE_CAPTURE 0
@@ -47,20 +47,20 @@ void init_peripherals(void) {
 	unsigned graphics_width = WIDTH*3/2;
 	unsigned graphics_height = HEIGHT*3/2;
 	unsigned image_start = graphics_width/2 - WIDTH/2;
-	
+
 	//initialize graphics
 	gl_init(graphics_width, graphics_height, GL_DOUBLEBUFFER);
 
-	//start up the camera, set the start of the image's top left corner in the 
+	//start up the camera, set the start of the image's top left corner in the
 	//graphics display. This starts SPI and I2C inside
 	if(CENTERED) arducam_init(WIDTH,HEIGHT,image_start,0);
 	else arducam_init(WIDTH,HEIGHT,0,0);
 }
 
-/* 
+/*
  * comtinuously capture images
  */
-void main(void) {	
+void monitor_loop(void) {	
     init_peripherals();
 
     while(1) {

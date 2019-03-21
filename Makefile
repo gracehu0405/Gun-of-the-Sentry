@@ -1,20 +1,20 @@
 NAME = main
 
-# This is the list of your modules that will be used when 
+# This is the list of your modules that will be used when
 # buliding the console application and libmypi.a library
 # To be considered for system bonus, MY_MODULES must name all of your modules
 # If you have unresolved issues with a module, you can remove and the
 # reference module will be used instead (no system bonus, though)
 #
 # *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o 
+MY_MODULES = ultrasound.o sensormap.o gun.o shell.o arducam/arducam.o arducam/graphics.o arducam/omni.o arducam/spi.o arducam/i2c.o
 #= shoot.o
-#timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o 
+#timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
 CFLAGS += -mapcs-frame -fno-omit-frame-pointer -mpoke-function-name
-LDFLAGS = -nostdlib -T memmap  -L$(CS107E)/lib 
+LDFLAGS = -nostdlib -T memmap  -L$(CS107E)/lib
 LDLIBS  = -lpi -lgcc
 
 all : $(NAME).bin $(MY_MODULES)
