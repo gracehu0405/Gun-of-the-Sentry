@@ -7,7 +7,7 @@ NAME = main
 # reference module will be used instead (no system bonus, though)
 #
 # *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o arducam/arducam.o graphics.o arducam/omni.o arducam/spi.o arducam/i2c.o
+MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o
 #= shoot.o
 #timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o
 
@@ -43,7 +43,7 @@ all : $(NAME).bin $(MY_MODULES)
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: tests/test_ultra_interrupts.bin
+test: tests/graphics_tests.c
 	rpi-install.py -p $<
 
 clean:

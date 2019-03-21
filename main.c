@@ -8,7 +8,6 @@
 #include "keyboard.h"
 #include "strings.h"
 #include "gl.h"
-#include "arducam/arducam.h"
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
@@ -28,30 +27,8 @@
 
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
-void init_peripherals(void);
-void capture_image(void);
 void write_text(void);
 int mode;
-
-void init_peripherals(void) {
-    timer_init();
-	timer_delay_ms(100);
-
-	uart_init();
-
-	//set multiplier to 1 for full screen, 2 for half, etc
-	unsigned graphics_width = WIDTH*3/2;
-	unsigned graphics_height = HEIGHT*3/2;
-	unsigned image_start = graphics_width/2 - WIDTH/2;
-
-	//initialize graphics
-	gl_init(graphics_width, graphics_height, GL_DOUBLEBUFFER);
-
-	//start up the camera, set the start of the image's top left corner in the
-	//graphics display. This starts SPI and I2C inside
-	if(CENTERED) arducam_init(WIDTH,HEIGHT,image_start,0);
-	else arducam_init(WIDTH,HEIGHT,0,0);
-}
 
 void main(void){
     uart_init();
@@ -60,7 +37,6 @@ void main(void){
     gun_init();
     shell_init(printf);
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
-    init_peripherals();
 
     mode = welcome_user_and_get_mode();
 
@@ -70,8 +46,7 @@ void main(void){
         int middleIndex = middleSensor();
 
         while(1) {
-             // capture_image(); // Arducam
-             // write_text();
+              write_text();
             //printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
            // timer_delay_ms(250);
 
@@ -87,7 +62,7 @@ void main(void){
 
             //TODO: make get smallest distance a function
             if(getDistance(closestSensor()) < MAX_RANGE){
-                //fire_once();
+                fire_once();
                 //trigger_on();
             }
 
@@ -106,19 +81,19 @@ static int welcome_user_and_get_mode(){
 
     printf("Hello, welcome to the Raspberry Pi Nerf Gun!\n");
     printf("Please choose a mode of operation:\n\n");
-    printf("Type 'Auto' for 'Auto mode' - gun performs auto tracking and firing\n");
-    printf("Type 'Interactive' for 'Interactive mode' - user controls gun with a keyboard\n\n");
+    printf("Type 'A' for 'Auto mode' - gun performs auto tracking and firing\n");
+    printf("Type 'I' for 'Interactive mode' - user controls gun with a keyboard\n\n");
     printf("Mode? ");
 
     shell_readline(line, sizeof(line));
 
-    while(strcmp(line, "Auto") && strcmp(line, "Interactive")){
-        printf("\n\nPlease enter 'Auto' or 'Interactive'\n");
+    while(strcmp(line, "A") && strcmp(line, "I")){
+        printf("\n\nPlease enter 'A' or 'I'\n");
         printf("Mode? ");
         shell_readline(line, sizeof(line));
     }
 
-    if(strcmp(line, "Auto") == 0) return AUTO;
+    if(strcmp(line, "A") == 0) return AUTO;
     return INTERACTIVE;
 }
 
@@ -126,12 +101,8 @@ static void interactive_mode(void){
 
     printf("\nNow in interactive mode...\n");
     key_event_t evt;
-    // while(1) {
-    //   capture_image(); // Arducam
-    //   write_text();
-    // }
+
     while(1) {
-        capture_image(); // Arducam
         write_text();
 
         if(keyboard_read_next() == PS2_KEY_ESC) break;

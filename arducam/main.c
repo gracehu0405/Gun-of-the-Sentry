@@ -60,12 +60,12 @@ void init_peripherals(void) {
 /*
  * comtinuously capture images
  */
-void monitor_loop(void) {	
+void monitor_loop(void) {
     init_peripherals();
 
     while(1) {
 	capture_image(); // Arducam
-	write_text(); // Run Graphics
+	//write_text(); // Run Graphics
 	// timer_delay(1);
     }
 }

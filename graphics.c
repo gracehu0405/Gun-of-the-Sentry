@@ -13,15 +13,13 @@
  * target is found and when darts are fired, etc.
  */
 
-// size of the image coming in
-#define _WIDTH   640 // 320
-#define _HEIGHT  512 // 240
+ extern int mode;
+ extern int num_darts;
 
-// size of the console, values too large get trimmed later
-#define _NROWS	10 // 20
-#define _NCOLS	20 // 50
-
-extern int mode;
+void graphics_init(void) {
+  gl_init(_WIDTH, _HEIGHT, GL_DOUBLEBUFFER);
+  gl_clear(GL_BLACK);
+}
 
 void write_text(void) {
 
@@ -29,16 +27,21 @@ void write_text(void) {
     gl_draw_string(10, 105, "Mode:", GL_GREEN);
     gl_draw_string(20, 125, "A/I", GL_GREEN);
 
-    if (mode == AUTO) { 
-	gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
+    if (mode == AUTO) {
+	     gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
     } else {
-	gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+	     gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
     }
 
 
     // Top right: Remaining Darts
     gl_draw_rect(430, 95, 20, 20, GL_WHITE); // square
-    gl_draw_string(435, 98, "8", GL_BLUE);
+
+    char buf[30];
+    //memset(buf, 0x77, sizeof(buf));
+    //snprintf(buf, 5, "%d", num_darts);
+
+    gl_draw_string(435, 98, buf, GL_BLUE);
     gl_draw_string(410, 120, "Darts", GL_GREEN);
     gl_draw_string(415, 140, "Left", GL_GREEN);
 

@@ -7,6 +7,16 @@
 #include "console.h"
 #include "gun.h"
 
+// size of the image coming in
+#define _WIDTH   640 // 320
+#define _HEIGHT  512 // 240
+
+// size of the console, values too large get trimmed later
+#define _NROWS	10 // 20
+#define _NCOLS	20 // 50
+
+int num_darts = 18;
+
 /* graphics.h
  * -----
  * Functions for a simple bare metal Raspberry Pi graphics library
@@ -19,5 +29,7 @@
  * (overlaid on the arducam scene) the target icon, display text when the
  * target is found and when darts are fired, etc.
  */
+
+void graphics_init(void);
 
  void write_text(void);
