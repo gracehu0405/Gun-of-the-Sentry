@@ -14,7 +14,8 @@ A Nerf Dart Zone Titan was used due to its ability to automatically reload darts
 Below, each component is described in detail:
 
 ## Hardware
-Essentially, the nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, arducam, and graphics.  
+
+The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, arducam, and graphics.  
 
 --Insert photos--
 
@@ -25,9 +26,9 @@ For automatic mode, 3 Ultrasonic Module HC-SR04 Sensors measure the distance of 
 
 - Ultrasound.h initializes each sensor, determines the distance measured by each sensor, the sensor with the closest distance, and the middle sensor on the nerf gun apparatus.
 
-## Arducam
+## Graphics
 
-
+The monitor displays a diagram of the gun and the target, as well as updates of how many darts left and which mode the user has selected.  
 
 ## Firing the Gun
 
@@ -36,11 +37,12 @@ To generate the trigger mechanism, we opened up the nerf gun and observed the ha
 - Gun.h includes the functions necessary for rotating and firing the nerf gunautomatically.  It rotates the gun until the middle sensor is reading the smallest distance, meaning it is facing the closest target, and then fires one dart.
 
 ## Breakdown
-Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism
 
-Grace: Arducam, graphics, building the base and mechanics, laser cutting, calibrating shooting, gun stability
+Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration
 
-Steffi: Building the base and mechanics, calibrating shooting, servo motor, mechanics, trigger mechanism
+Grace: Graphics, building the base and mechanics, laser cutting, calibrating shooting, gun stability
+
+Steffi: Building the base and mechanics, calibrating shooting, servo motor, rotation, trigger mechanism
 
 ## References
 
