@@ -1,6 +1,8 @@
 #ifndef GUN_H
 #define GUN_H
 
+#define NUM_DARTS 18
+
 #include "gpio.h"
 
 /* Functions for controlling and operating the gun
