@@ -35,7 +35,7 @@ void main(void){
     timer_init();
     gpio_init();
     gun_init();
-    shell_init(printf);
+    shell_init(printf); //console_printf
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
     mode = welcome_user_and_get_mode();
@@ -48,9 +48,11 @@ void main(void){
         int middleIndex = middleSensor();
 
         while(1) {
-              write_text();
-            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches, distance_3 = %d inches, distance_4 = %d inches\n", getDistance(0), getDistance(1), getDistance(2), getDistance(3), getDistance(4));
-           // timer_delay_ms(250);
+              //write_text();
+              while(1) {
+            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
+            timer_delay_ms(250);
+         }
 
             int smallestIndex = closestSensor();
             if(smallestIndex < middleIndex){
@@ -64,7 +66,7 @@ void main(void){
 
             //TODO: make get smallest distance a function
             if(getDistance(closestSensor()) < MAX_RANGE){
-                fire_once();
+                //fire_once();
                 //trigger_on();
             }
 

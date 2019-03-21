@@ -153,7 +153,7 @@ void ultraSound_init(void){
 }
 
 unsigned int middleSensor(void) {
-    return NUM_SENSORS/2; 
+    return NUM_SENSORS/2;
 }
 
 unsigned int getDistance(int pos){
