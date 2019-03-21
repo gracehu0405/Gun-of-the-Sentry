@@ -22,36 +22,44 @@ void graphics_init(void) {
 void write_text(void) {
 
     // Top left: Mode
-    gl_draw_string(10, 105, "Mode:", GL_GREEN);
-    gl_draw_string(20, 125, "A/I", GL_GREEN);
+    gl_draw_string(30, 150, "Mode:", GL_GREEN);
+    gl_draw_string(40, 170, "A/I", GL_GREEN);
 
     if (mode == AUTO) {
-	     gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
+	gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
     } else {
-	     gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+	gl_draw_rect(66, 186, 14, 3, GL_YELLOW); // Right (I)
     }
 
 
     // Top right: Remaining Darts
-    gl_draw_rect(430, 95, 20, 20, GL_WHITE); // square
+    gl_draw_rect(560, 140, 20, 20, GL_WHITE); // square
 
-    char buf[30];
+    // char buf[30];
     //memset(buf, 0x77, sizeof(buf));
     //snprintf(buf, 5, "%d", num_darts);
 
-    gl_draw_string(435, 98, buf, GL_BLUE);
-    gl_draw_string(410, 120, "Darts", GL_GREEN);
-    gl_draw_string(415, 140, "Left", GL_GREEN);
+    gl_draw_string(565, 143, "8", GL_BLUE);
+    gl_draw_string(540, 165, "Darts", GL_GREEN);
+    gl_draw_string(545, 185, "Left", GL_GREEN);
 
     // Bottom Center: Display info
-    gl_draw_string(110, _HEIGHT/2, "Locked down target!", GL_CYAN);
-    gl_draw_string(60, _HEIGHT/2 + 40, "Target Distance: 9 in away", GL_CYAN);
-    gl_draw_rect(_WIDTH/2 - 26, _HEIGHT/2 + 60, 16, 3, GL_BLUE); // Underline the number
-    gl_draw_string(145, _HEIGHT/2 + 80, "Firing Darts!", GL_CYAN);
+    gl_draw_string(200, _HEIGHT/2 + 100, "Locked down target!", GL_CYAN);
+    gl_draw_string(100, _HEIGHT/2 + 150, "Target Distance: 9 inches away", GL_CYAN);
+    gl_draw_rect(_WIDTH/2 + 15, _HEIGHT/2 + 170, 16, 3, GL_BLUE); // Underline the number
+    gl_draw_string(235, _HEIGHT/2 + 200, "Firing Darts!", GL_CYAN);
 
     // Target symbol
-    gl_draw_triangle(250, 100, 245, 110, 255, 110, GL_RED);
-    gl_draw_triangle(250, 114, 245, 104, 255, 104, GL_RED);
+    gl_draw_triangle(320, 100, 315, 110, 325, 110, GL_RED);
+    gl_draw_triangle(320, 114, 315, 104, 325, 104, GL_MAGENTA);
+
+    // Draw Gun Symbol
+    gl_draw_rect(300, 250, 40, 20, GL_BLUE);
+
+    // Draw Frame box
+    gl_draw_line(120, 0, 120, 325, GL_WHITE);
+    gl_draw_line(_WIDTH - 120, 0, _WIDTH - 120, 325, GL_WHITE);
+    gl_draw_line(120, 325, _WIDTH - 120, 325, GL_WHITE);
 
 
     // Display screen
