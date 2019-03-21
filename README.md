@@ -1,4 +1,4 @@
-# Title
+# Gun of the Sentry
 
 ## Team
 Michael Oduoza, Grace Hu, Steffi Andersen
