@@ -31,6 +31,7 @@ static void interactive_mode(void);
 void init_peripherals(void);
 void capture_image(void);
 void write_text(void);
+int mode;
 
 void init_peripherals(void) {
     timer_init();
@@ -61,7 +62,7 @@ void main(void){
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
     init_peripherals();
 
-    int mode = welcome_user_and_get_mode();
+    mode = welcome_user_and_get_mode();
 
     if(mode == AUTO){
         printf("\nNow in Auto mode...\n");
@@ -69,8 +70,8 @@ void main(void){
         int middleIndex = middleSensor();
 
         while(1) {
-             capture_image(); // Arducam
-             write_text();
+             // capture_image(); // Arducam
+             // write_text();
             //printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
            // timer_delay_ms(250);
 
