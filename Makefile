@@ -1,15 +1,6 @@
-NAME = graphics_tests
+NAME = main
 
-# This is the list of your modules that will be used when
-# buliding the console application and libmypi.a library
-# To be considered for system bonus, MY_MODULES must name all of your modules
-# If you have unresolved issues with a module, you can remove and the
-# reference module will be used instead (no system bonus, though)
-#
-# *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o graphics_tests.o
-#= shoot.o
-#timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o graphics_tests.o
+MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o #graphics_tests.o
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding
@@ -18,8 +9,6 @@ LDFLAGS = -nostdlib -T memmap  -L$(CS107E)/lib
 LDLIBS  = -lpi -lgcc
 
 all : $(NAME).bin $(MY_MODULES)
-
-#lib: libmypi.a
 
 %.bin: %.elf
 	arm-none-eabi-objcopy $< -O binary $@
@@ -33,10 +22,6 @@ all : $(NAME).bin $(MY_MODULES)
 %.o: %.s
 	arm-none-eabi-as $(ASFLAGS) $< -o $@
 
-#libmypi.a: $(MY_MODULES) Makefile
-#	rm -f $@
-#	arm-none-eabi-ar cDr $@ $(filter %.o,$^)
-
 %.list: %.o
 	arm-none-eabi-objdump --no-show-raw-insn -d $< > $@
 
@@ -48,7 +33,6 @@ test: graphics_tests.c
 
 clean:
 	rm -f *.o *.bin *.elf *.list *~ libmypi.a
-	#rm -f apps/*.o apps/*.bin apps/*.elf apps/*.list apps/*~
 	rm -f tests/*.o tests/*.bin tests/*.elf tests/*.list tests/*~
 
 .PHONY: all clean install test

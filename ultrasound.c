@@ -152,28 +152,17 @@ void ultraSound_init(void){
 
 }
 
-unsigned int middleSensor(void) {
+int middleSensor(void) {
     return NUM_SENSORS/2;
 }
 
-unsigned int getDistance(int pos){
+int getDistance(int pos){
     // Out of bounds
     if(pos > (NUM_SENSORS - 1)) return -1;
 
     return distances[pos];
 }
 
-
-unsigned int closestSensor(void) {
-
+int closestSensor(void) {
     return closestIndex;
-   /* int curDistance = MAX_RANGE;
-    int index = -1;
-    for(int i = 0; i < NUM_SENSORS; i++){
-        if(getDistance(i)<= curDistance) {
-            curDistance = getDistance(i);
-            index = i;
-        }
-    }
-    return index;*/
 }

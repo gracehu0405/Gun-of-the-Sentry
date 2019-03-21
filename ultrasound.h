@@ -19,12 +19,12 @@
 void ultraSound_init(void);
 
 // Returns array index of middle sensor
-unsigned int middleSensor(void);
+int middleSensor(void);
 
-// Returns index of sensor with smallest distance, -1 if no signals below threshold
-unsigned int closestSensor(void);
+// Returns index of sensor with the closest object 
+int closestSensor(void);
 
-// (Temporary) function to return distance - do bounds error checking
-unsigned int getDistance(int pos);
+// Returs the distance of the object in front of the sensor at pos location
+int getDistance(int pos);
 
 #endif

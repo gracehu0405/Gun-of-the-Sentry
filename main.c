@@ -13,21 +13,10 @@
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
 
-#define WIDTH   320 // 320
-#define HEIGHT  240 // 240
-
-// size of the console, values too large get trimmed later
-#define CONSOLE_ROWS	20 // 20
-#define CONSOLE_COLS	50 // 50
-
-// center the image on the screen?
-#define CENTERED	1
-
-#define IMAGE_CAPTURE 0
-#define IMAGE_STREAM  1
 
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
+static void auto_mode(int middleIndex);
 void write_text(void);
 
 void main(void){
@@ -35,55 +24,59 @@ void main(void){
     timer_init();
     gpio_init();
     gun_init();
-    shell_init(printf); //console_printf
+    shell_init(printf); //console_printf and change all printf to shell_printf
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
     mode = welcome_user_and_get_mode();
-
     graphics_init();
 
     if(mode == AUTO){
+
         printf("\nNow in Auto mode...\n");
         ultraSound_init();
         int middleIndex = middleSensor();
+        auto_mode(middleIndex); 
 
-        while(1) {
-              //write_text();
-              while(1) {
-            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
-            timer_delay_ms(250);
-         }
-
-            int smallestIndex = closestSensor();
-            if(smallestIndex < middleIndex){
-                rotate_clockwise();
-            } else if(smallestIndex > middleIndex){
-                rotate_counter_clockwise();
-            }
-            //printf("%d\n", getDistance(closestSensor()));
-            while(closestSensor() != middleIndex){}
-            rotator_off();
-
-            //TODO: make get smallest distance a function
-            if(getDistance(closestSensor()) < MAX_RANGE){
-                //fire_once();
-                //trigger_on();
-            }
-
-             while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
-            // trigger_off();
-        }
-        // User interactive mode
     } else {
+
+        printf("\nNow in interactive mode...\n");
         interactive_mode();
     }
+}
+
+static void auto_mode(int middleIndex){
+    int smallestIndex;
+    while(1){
+        //write_text();
+        /* while(1) {
+           printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
+           timer_delay_ms(250);
+           }*/
+
+        smallestIndex = closestSensor();
+        if(smallestIndex < middleIndex){
+            rotate_clockwise();
+        } else if(smallestIndex > middleIndex){
+            rotate_counter_clockwise();
+        }
+
+        while(closestSensor() != middleIndex){}
+        rotator_off();
+
+        if(getDistance(closestSensor()) < MAX_RANGE){
+            fire_once();
+        }
+
+        while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
+    }
+
 }
 
 static int welcome_user_and_get_mode(){
 
     char line[LINE_LEN];
 
-    printf("Hello, welcome to the Raspberry Pi Nerf Gun!\n");
+    printf("Hello, welcome to the Raspberry Pi Sentry Gun!\n");
     printf("Please choose a mode of operation:\n\n");
     printf("Type 'A' for 'Auto mode' - gun performs auto tracking and firing\n");
     printf("Type 'I' for 'Interactive mode' - user controls gun with a keyboard\n\n");
@@ -103,7 +96,6 @@ static int welcome_user_and_get_mode(){
 
 static void interactive_mode(void){
 
-    printf("\nNow in interactive mode...\n");
     key_event_t evt;
 
     while(1) {

@@ -2,6 +2,7 @@
 #define GUN_H
 
 #define NUM_DARTS 18
+#define ONE_BULLET_DELAY 333
 
 #include "gpio.h"
 
@@ -40,9 +41,11 @@ void rotate_counter_clockwise(void);
 /* Hold the gun still */
 void rotator_off(void);
 
-/* Fire x bullets */
-// TODO: check time to shoot 1 bullet
+/* Fire 1 bullet */
 void fire_once(void);
+
+/* Returns the number of unfired bullets left in the gun */
+int get_ammo_remaining(void);
 
 
 #endif
