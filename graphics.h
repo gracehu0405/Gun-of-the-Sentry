@@ -10,8 +10,7 @@
 // size of the image coming in
 #define _WIDTH   640 // 320
 #define _HEIGHT  512 // 240
-
-//int num_darts = 18;
+#define NUM_DARTS 18
 
 /* graphics.h
  * -----

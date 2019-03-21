@@ -8,6 +8,7 @@
 #include "keyboard.h"
 #include "strings.h"
 #include "gl.h"
+#include "graphics.h"
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
@@ -28,7 +29,6 @@
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
 void write_text(void);
-int mode;
 
 void main(void){
     uart_init();
@@ -39,6 +39,8 @@ void main(void){
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
     mode = welcome_user_and_get_mode();
+
+    graphics_init();
 
     if(mode == AUTO){
         printf("\nNow in Auto mode...\n");

@@ -13,8 +13,6 @@
  * target is found and when darts are fired, etc.
  */
 
- //extern int mode;
- //extern int num_darts;
 
 void graphics_init(void) {
   gl_init(_WIDTH, _HEIGHT, GL_DOUBLEBUFFER);
@@ -27,11 +25,11 @@ void write_text(void) {
     gl_draw_string(10, 105, "Mode:", GL_GREEN);
     gl_draw_string(20, 125, "A/I", GL_GREEN);
 
-    // if (mode == AUTO) {
-	  //    gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
-    // } else {
-	  //    gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
-    // }
+    if (mode == AUTO) {
+	     gl_draw_rect(18, 140, 14, 3, GL_YELLOW); // Left (A)
+    } else {
+	     gl_draw_rect(46, 140, 14, 3, GL_YELLOW); // Right (I)
+    }
 
 
     // Top right: Remaining Darts

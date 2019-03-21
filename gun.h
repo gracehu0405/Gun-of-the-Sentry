@@ -18,6 +18,8 @@ enum gun_pins{
     GUN_TRIGGER = GPIO_PIN21,
 };
 
+int mode;
+
 /* Initialize the gun for operation */
 void gun_init(void);
 
