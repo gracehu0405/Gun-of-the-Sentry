@@ -1,4 +1,4 @@
-NAME = graphics_tests
+NAME = main
 
 # This is the list of your modules that will be used when
 # buliding the console application and libmypi.a library
@@ -7,7 +7,7 @@ NAME = graphics_tests
 # reference module will be used instead (no system bonus, though)
 #
 # *** Be sure MY_MODULES is set correctly when you submit! ***
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o graphics_tests.o
+MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o #graphics_tests.o
 #= shoot.o
 #timer.o gpio.o strings.o printf.o backtrace.o malloc.o keyboard.o shell.o fb.o gl.o console.o gprof.o graphics_tests.o
 

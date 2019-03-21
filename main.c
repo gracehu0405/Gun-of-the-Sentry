@@ -49,7 +49,7 @@ void main(void){
 
         while(1) {
               write_text();
-            //printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
+            printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches, distance_3 = %d inches, distance_4 = %d inches\n", getDistance(0), getDistance(1), getDistance(2), getDistance(3), getDistance(4));
            // timer_delay_ms(250);
 
             int smallestIndex = closestSensor();
