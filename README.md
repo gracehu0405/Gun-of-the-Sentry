@@ -20,7 +20,7 @@ The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut
 ![Image](https://github.com/cs107e/sandersen12-mcoduoza-gracehu0405-project/blob/master/gun.jpg)
 
 ## Sensors
-For automatic mode, 3 Ultrasonic Module HC-SR04 Sensors measure the distance of objects in front of them. This value is converted to inches and the shortest distance is calculated. If there is an object within the threshold of 150 inches, the nerf gun fires. 
+For automatic mode, 3 Ultrasonic Module HC-SR04 Sensors measure the distance of objects in front of them. This value is converted to inches and the shortest distance is calculated. If there is an object within the threshold of 150 inches, the nerf gun fires. The sensors are multiplexed in sequence through an interrupts routine, providing the "illusion" of having all the distance information at the same time. 
 
 - Sensormap.h lays out the GPIO pins associated with each sensor. Each standard HC-SR04 ultrasonic sensor has one trigger pin and one echo pin. We create two entries for the echo pin to be able to independently detect both rising and falling edges on the pin.
 
@@ -38,7 +38,7 @@ To generate the trigger mechanism, we opened up the nerf gun and observed the ha
 
 ## Breakdown
 
-Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration
+Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration, overall circuit design, wiring of electrical componetns
 
 Grace: Graphics, building the base and mechanics, laser cutting, calibrating shooting, gun stability
 
