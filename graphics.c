@@ -82,11 +82,11 @@ void draw_or_clear_target(int pos, int action){
     static int location_1_y1 = 100;
     static int location_1_y2 = 104;
 
-    static int location_0_x = 200;
+    static int location_0_x = 430;
     static int side_location_y1 = 130;
     static int side_location_y2 = 134;
 
-    static int location_2_x = 430;
+    static int location_2_x = 200;
 
     color_t color1;
     color_t color2;

@@ -28,6 +28,7 @@ void main(void){
     int mode = welcome_user_and_get_mode();
     gun_init(mode);
     graphics_init();
+    write_text();
 
     if(mode == AUTO){
 
@@ -51,11 +52,12 @@ static void auto_mode(int middleIndex){
         smallestIndex = closestSensor();
         if(smallestIndex < middleIndex){
             rotate_clockwise();
-
-            // (erase middle and) draw new target location here (pass position as paramater)
+            draw_or_clear_target(middleIndex, CLEAR);
+            draw_or_clear_target(0, DRAW);
         } else if(smallestIndex > middleIndex){
             rotate_counter_clockwise();
-            // (erase middle and) draw new target location here (pass position as parameter)
+            draw_or_clear_target(middleIndex, CLEAR);
+            draw_or_clear_target(2, DRAW);
         }
 
         prev_time = timer_get_ticks();
@@ -67,11 +69,13 @@ static void auto_mode(int middleIndex){
 
         if(getDistance(closestSensor()) < MAX_RANGE){
             fire_once();
-            // erase left and right and draw target in the center
+            draw_or_clear_target(0, CLEAR);
+            draw_or_clear_target(2, CLEAR);
+            draw_or_clear_target(1, DRAW);
         }
 
         while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
-        // erase center
+        draw_or_clear_target(1, CLEAR);
     }
 
 }
