@@ -22,10 +22,9 @@
  * access and configuration; trying to use both fb and gl
  * simultaneously is discouraged.
  *
- * For our nerf gun final project, this file will be used to draw out
- * (overlaid on the arducam scene) the target icon, display text when the
- * target is found and when darts are fired, etc. Please see the header file
- * for function comments.
+ * For our nerf gun final project, this file will be used to draw out 
+ * the target icon, display text when the target is found and when darts are fired, etc. 
+ * Please see the header file for function comments.
  */
 
 

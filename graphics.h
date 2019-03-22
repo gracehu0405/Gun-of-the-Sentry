@@ -14,13 +14,13 @@
  * ----------------
  * Functions for a simple bare metal Raspberry Pi graphics library
  * that draws pixels, text, lines, triangles, and rectangles. Builds
- * on the lower-level framebuffer library fb.[ch] for framebuffer
+ * on the lower-level framebuffer library fb.h for framebuffer
  * access and configuration; trying to use both fb and gl
  * simultaneously is discouraged.
  *
  * For our nerf gun final project, this file will be used to draw out
- * (overlaid on the arducam scene) the target icon, display text when the
- * target is found and when darts are fired, etc. 
+ * the target icon/location, display text when the target is found and
+ * when darts are fired, etc. 
  *
  * Authors: Michael Oduoza, Steffi Andersen, Grace Hu
  * Date: Thursday March 21st, 2019

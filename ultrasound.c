@@ -7,8 +7,14 @@
  *
  * Implementation of standard functions defined in ultrasound.h for
  * initializing and reading the output of HC-SRO4 sensor modules.
- * Contains an interrupts mechanism that allows the sensors to periodically
- * keep track of the range of objects in their vicinity.
+ * Multiplexes the sensors through an interrupts routine, creating the "illusion"
+ * of having all the distance information at the same time. Essentially, each ultrasonic
+ * sensor sends out a short ultrasonic pulse and waits for a response. When it receives
+ * the response, it creates a short pulse on its echo output pin; the length of the pulse
+ * is how long it took to receive the response. This pulse causes the rising and falling edge 
+ * handlers to be called. If no response is seen within TIMEOUT (a macro in ultrasound.h),
+ * the armtimer will, itself, interrupt the routine, set the distance to its maximum value, and advance
+ * to the next sensor. Please see the ultrasound.h file for comments on the non-static functions.
  */
 #include "timer.h"
 #include "gpio.h"
@@ -31,6 +37,11 @@ static unsigned int closestIndex = 0;
 static void send_new_pulse(unsigned int pin);
 
 
+/* HANDLER: risingEdge
+ *
+ * Handler will be called when there is a rising edge 
+ * on the echo (response) pin from an ultrasonic sensor
+ */
 bool risingEdge(unsigned int pc){
     if(gpio_check_and_clear_event(sensor_array[currSensorNum].echo_rising_pin)){
         start_times[currSensorNum] = timer_get_ticks();
@@ -46,6 +57,11 @@ bool risingEdge(unsigned int pc){
 }
 
 
+/* HANDLER: fallingEdge
+ *
+ * Handler will be called when there is a falling edge 
+ * on the echo (response) pin from an ultrasonic sensor
+ */
 bool fallingEdge(unsigned int pc){
     if(gpio_check_and_clear_event(sensor_array[currSensorNum].echo_falling_pin)){
 
@@ -79,6 +95,13 @@ bool fallingEdge(unsigned int pc){
 }
 
 
+/** HANDLER: timeout_handler
+ *
+ * As stated in the comment at the top of the file, we have
+ * an armtimer that counts in the background during the interrupts routine.
+ * If, after sending out an ultrasonic pulse through a sensor, no response is received
+ * within TIMEOUT (macro defined in ultrasound.h), this handler will be called
+ */
 bool timeout_handler(unsigned int pc){
     if(armtimer_check_and_clear_interrupt()){
 
@@ -112,12 +135,24 @@ bool timeout_handler(unsigned int pc){
     return false;
 }
 
+
+/** STATIC FUNCTION: send_new_pulse
+ *
+ * Sends a short 10us ultrasonic pulse out from the sensor with
+ * its trigger connected to pin
+ */
 static void send_new_pulse(unsigned int pin){
     gpio_write(pin, 1);
     timer_delay_us(10);
     gpio_write(pin, 0);
 }
 
+
+/** STATIC FUNCTION: interrupts_init
+ *
+ * This function configures all the necessary interrupts for the ultrasonic
+ * sensing routine
+ */
 static void interrupts_init(void){
     gpio_enable_event_detection(sensor_array[0].echo_rising_pin, GPIO_DETECT_RISING_EDGE);
     gpio_enable_event_detection(sensor_array[0].echo_falling_pin, GPIO_DETECT_FALLING_EDGE);
