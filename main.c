@@ -37,6 +37,7 @@ void main(void){
         timer_delay(2);
         gl_clear(GL_BLACK);
         write_text();
+
         ultraSound_init();
         int middleIndex = middleSensor();
         auto_mode(middleIndex); 
@@ -48,6 +49,14 @@ void main(void){
     }
 }
 
+
+/** FUNCTION: auto_mode
+ *
+ * This function puts the system in an infinite loop whereby the 
+ * gun runs in its automatic configuration
+ *
+ * @param middleIndex - the index of the middle sensor
+ */
 static void auto_mode(int middleIndex){
     int smallestIndex;
     unsigned int prev_time;
@@ -83,6 +92,15 @@ static void auto_mode(int middleIndex){
     }
 }
 
+
+/** FUNCTION: welcome_user_and_get_mode
+ *
+ * This function prints a welcome message to the console and prompts
+ * the user to set the mode of operation. It will reprompt the user
+ * until they enter a valid mode
+ *
+ * @return - the mode given by the user
+ */
 static int welcome_user_and_get_mode(){
 
     char line[LINE_LEN];
@@ -105,6 +123,13 @@ static int welcome_user_and_get_mode(){
     return INTERACTIVE;
 }
 
+
+/** FUNCTION: update_screen
+ *
+ * This function is called every time the gun fires a bullet.
+ * It updates the graphics with new information about the target,
+ * bullets, etc.
+ */
 static void update_screen(void){
     draw_or_clear_target(0, CLEAR);
     draw_or_clear_target(2, CLEAR);
@@ -115,6 +140,17 @@ static void update_screen(void){
     draw_fire_status(FIRING);
 }
 
+
+/** FUNCTION: interactive_mode
+ *
+ * This function puts the system in an infinite loop whereby the gun operates
+ * in its interactive configuration with a keyboard. The controls are as follows:
+ *
+ * press a - rotate counter clockwise
+ * press d - rotate clockwise
+ * press return - fire
+ * press esc - quit
+ */
 static void interactive_mode(void){
 
     key_event_t evt;

@@ -58,7 +58,7 @@ void draw_mode(void) {
 
 
 void draw_remaining_darts(void) {
-    gl_draw_rect(550, 140, 40, 20, GL_WHITE); 
+    gl_draw_rect(550, 140, 40, 20, GL_WHITE); // clear the current number 
     char buf[30];
     snprintf(buf, sizeof(buf), "%d", get_ammo_remaining());
     gl_draw_string(555, 143, buf, GL_BLUE);
@@ -68,7 +68,7 @@ void draw_remaining_darts(void) {
 
 
 void draw_target_status(int status){
-    gl_draw_rect(200, _HEIGHT/2 + 100, 300, 25, GL_BLACK);  
+    gl_draw_rect(200, _HEIGHT/2 + 100, 300, 25, GL_BLACK); // clear the current target status 
     if(status == CENTERED){  
         gl_draw_string(200, _HEIGHT/2 + 100, "Locked down target!", GL_CYAN); 
     } else if(status == OFF_CENTERED){
@@ -76,8 +76,9 @@ void draw_target_status(int status){
     } 
 }
 
+
 void draw_fire_status(int status){
-    gl_draw_rect(235, _HEIGHT/2 + 200, 300, 25, GL_BLACK);
+    gl_draw_rect(235, _HEIGHT/2 + 200, 300, 25, GL_BLACK); // clear the current firing status
     if(status == FIRING){
         gl_draw_string(235, _HEIGHT/2 + 200, "Firing Darts!", GL_CYAN); 
     }else if(status == RESTING){
@@ -89,7 +90,7 @@ void draw_fire_status(int status){
 void draw_target_distance(int distance){
     char buf[100];
     snprintf(buf, sizeof(buf), "Target Distance: %d inches away", distance);
-    gl_draw_rect(100, _HEIGHT/2 + 150, 500, 25, GL_BLACK);
+    gl_draw_rect(100, _HEIGHT/2 + 150, 500, 25, GL_BLACK); // clear the current distance
     gl_draw_string(100, _HEIGHT/2 + 150, buf, GL_CYAN); 
 }
 
@@ -108,23 +109,11 @@ void draw_frame_and_gun(void) {
 
 void draw_or_clear_target(int pos, int action) {
 
-    /*static int location_1_x = 315;
-    static int location_1_y1 = 100;
-    static int location_1_y2 = 104;
-
-    static int location_0_x = 430;
-    static int side_location_y1 = 130;
-    static int side_location_y2 = 134;
-
-    static int location_2_x = 200;*/
-
     static int location_1_x = 315, location_1_y1 = 100, location_1_y2 = 104;
-
     static int location_0_x = 430, side_location_y1 = 130, side_location_y2 = 134;
-
     static int location_2_x = 200;
-    color_t color1;
-    color_t color2;
+
+    color_t color1, color2;
     if(action == DRAW) {
         color1 = GL_RED;
         color2 = GL_MAGENTA;
