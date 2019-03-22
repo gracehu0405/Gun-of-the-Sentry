@@ -17,7 +17,7 @@ Below, each component is described in detail:
 
 The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, arducam, and graphics.  
 
-![Image](https://github.com/cs107e/sandersen12-mcoduoza-gracehu0405-project/blob/master/IMG_8556.jpeg)
+![Image](https://github.com/cs107e/sandersen12-mcoduoza-gracehu0405-project/blob/master/gun.jpeg)
 
 ## Sensors
 For automatic mode, 3 Ultrasonic Module HC-SR04 Sensors measure the distance of objects in front of them. This value is converted to inches and the shortest distance is calculated. If there is an object within the threshold of 150 inches, the nerf gun fires. The sensors are multiplexed in sequence through an interrupts routine, providing the "illusion" of having all the distance information at the same time. 
