@@ -1,5 +1,5 @@
 #include "ultrasound.h"
-#include "printf.h"
+#include "shell.h"
 #include "uart.h"
 #include "timer.h"
 #include "gun.h"
@@ -9,6 +9,8 @@
 #include "strings.h"
 #include "gl.h"
 #include "graphics.h"
+#include "console.h"
+#include "shell.h"
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
@@ -16,30 +18,32 @@
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
 static void auto_mode(int middleIndex);
-void write_text(void);
+static void update_screen(void);
 
 void main(void){
     uart_init();
     timer_init();
     gpio_init();
-    shell_init(printf); //console_printf and change all printf to shell_printf
+    shell_init(console_printf);
+    console_init(NROWS, NCOLS);
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
     int mode = welcome_user_and_get_mode();
     gun_init(mode);
-    graphics_init();
-    write_text();
 
     if(mode == AUTO){
-
-        printf("\nNow in Auto mode...\n");
+        graphics_init();
+        console_printf("\nNow in Auto mode...\n");
+        timer_delay(2);
+        gl_clear(GL_BLACK);
+        write_text();
         ultraSound_init();
         int middleIndex = middleSensor();
         auto_mode(middleIndex); 
 
     } else {
 
-        printf("\nNow in interactive mode...\n");
+        console_printf("\nNow in interactive mode...\n");
         interactive_mode();
     }
 }
@@ -69,37 +73,46 @@ static void auto_mode(int middleIndex){
 
         if(getDistance(closestSensor()) < MAX_RANGE){
             fire_once();
-            draw_or_clear_target(0, CLEAR);
-            draw_or_clear_target(2, CLEAR);
-            draw_or_clear_target(1, DRAW);
+            update_screen(); 
         }
+        draw_fire_status(RESTING);
 
         while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
         draw_or_clear_target(1, CLEAR);
+        draw_target_status(OFF_CENTERED);
     }
-
 }
 
 static int welcome_user_and_get_mode(){
 
     char line[LINE_LEN];
 
-    printf("Hello, welcome to the Raspberry Pi Sentry Gun!\n");
-    printf("Please choose a mode of operation:\n\n");
-    printf("Type 'A' for 'Auto mode' - gun performs auto tracking and firing\n");
-    printf("Type 'I' for 'Interactive mode' - user controls gun with a keyboard\n\n");
-    printf("Mode? ");
+    console_printf("Hello, welcome to the Raspberry Pi Sentry Gun!\n");
+    console_printf("Please choose a mode of operation:\n\n");
+    console_printf("Type 'A' for 'Auto mode' - gun performs auto tracking and firing\n");
+    console_printf("Type 'I' for 'Interactive mode' - user controls gun with a keyboard\n\n");
+    console_printf("Mode? ");
 
     shell_readline(line, sizeof(line));
 
     while(strcmp(line, "A") && strcmp(line, "I")){
-        printf("\n\nPlease enter 'A' or 'I'\n");
-        printf("Mode? ");
+        console_printf("\n\nPlease enter 'A' or 'I'\n");
+        console_printf("Mode? ");
         shell_readline(line, sizeof(line));
     }
 
     if(strcmp(line, "A") == 0) return AUTO;
     return INTERACTIVE;
+}
+
+static void update_screen(void){
+    draw_or_clear_target(0, CLEAR);
+    draw_or_clear_target(2, CLEAR);
+    draw_or_clear_target(1, DRAW);
+    draw_remaining_darts();
+    draw_target_status(CENTERED);
+    draw_target_distance(getDistance(closestSensor()));
+    draw_fire_status(FIRING);
 }
 
 static void interactive_mode(void){

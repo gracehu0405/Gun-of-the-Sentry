@@ -1,6 +1,6 @@
 NAME = main
 
-MY_MODULES = ultrasound.o sensormap.o gun.o shell.o graphics.o #graphics_tests.o
+MY_MODULES = ultrasound.o sensormap.o gun.o graphics.o 
 
 CFLAGS  = -I$(CS107E)/include -g -Wall -Wpointer-arith
 CFLAGS += -Og -std=c99 -ffreestanding

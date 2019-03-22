@@ -3,8 +3,10 @@
 
 #define NUM_DARTS 18
 #define ONE_BULLET_DELAY 333
-#define CALIBRATION_DELAY 300
+#define CALIBRATION_DELAY 500
 #define TRACKING_TIMEOUT 2000000
+#define FIRING 1
+#define RESTING 0
 
 #include "gpio.h"
 

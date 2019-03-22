@@ -7,9 +7,15 @@
 #include "timer.h"
 #include "console.h"
 #include "gun.h"
+#include "ultrasound.h"
 
-/* graphics.c
- * -----
+/*
+ * File: graphics.c
+ * -------------------
+ *
+ * Authors: Michael Oduoza, Steffi Andersen, Grace Hu
+ * Date: Thursday March 21st, 2019
+ *
  * Functions for a simple bare metal Raspberry Pi graphics library
  * that draws pixels, text, lines, triangles, and rectangles. Builds
  * on the lower-level framebuffer library fb.h for framebuffer
@@ -18,14 +24,9 @@
  *
  * For our nerf gun final project, this file will be used to draw out
  * (overlaid on the arducam scene) the target icon, display text when the
- * target is found and when darts are fired, etc.
+ * target is found and when darts are fired, etc. Please see the header file
+ * for function comments.
  */
-
-// Function prototypes
-static void draw_mode(void);
-static void draw_remaining_darts(void); 
-static void draw_display_info(void);
-static void draw_display(void); 
 
 
 void graphics_init(void) {
@@ -33,51 +34,67 @@ void graphics_init(void) {
     gl_clear(GL_BLACK);
 }
 
-// Main function that draws graphics
 void write_text(void) {
     draw_mode();
     draw_remaining_darts(); 
-    draw_display_info();
-    draw_display(); 
+    draw_frame_and_gun();
+    draw_target_status(OFF_CENTERED);
+    draw_target_distance(MAX_RANGE);
+    draw_fire_status(RESTING);
 }
 
 
-// Mode: Top left of graphics tells you which mode you're in
 void draw_mode(void) {
 
     gl_draw_string(30, 150, "Mode:", GL_GREEN);
     gl_draw_string(40, 170, "A/I", GL_GREEN);
 
     if (get_gun_mode() == AUTO) {
-       gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
+        gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
     } else {
-       gl_draw_rect(66, 186, 14, 3, GL_YELLOW); // Right (I)
+        gl_draw_rect(66, 186, 14, 3, GL_YELLOW); // Right (I)
     }
-
-    //gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
 }
 
 
-// Top right: Remaining Darts
 void draw_remaining_darts(void) {
-    gl_draw_rect(560, 140, 20, 20, GL_WHITE); // square
-    gl_draw_string(565, 143, get_ammo_remaining(), GL_BLUE);
+    gl_draw_rect(550, 140, 40, 20, GL_WHITE); 
+    char buf[30];
+    snprintf(buf, sizeof(buf), "%d", get_ammo_remaining());
+    gl_draw_string(555, 143, buf, GL_BLUE);
     gl_draw_string(540, 165, "Darts", GL_GREEN);
     gl_draw_string(545, 185, "Left", GL_GREEN);
 }
 
 
-// Bottom Center: Display info
-void draw_display_info(void) {
-    gl_draw_string(200, _HEIGHT/2 + 100, "Locked down target!", GL_CYAN); // TODO: not constant
-    gl_draw_string(100, _HEIGHT/2 + 150, "Target Distance: 9 inches away", GL_CYAN); // TODO: not constant
-    gl_draw_rect(_WIDTH/2 + 15, _HEIGHT/2 + 170, 16, 3, GL_BLUE); // Underline the number
-    gl_draw_string(235, _HEIGHT/2 + 200, "Firing Darts!", GL_CYAN); // TODO: not constant
+void draw_target_status(int status){
+    gl_draw_rect(200, _HEIGHT/2 + 100, 300, 25, GL_BLACK);  
+    if(status == CENTERED){  
+        gl_draw_string(200, _HEIGHT/2 + 100, "Locked down target!", GL_CYAN); 
+    } else if(status == OFF_CENTERED){
+        gl_draw_string(200, _HEIGHT/2 + 100, "Target not centered...", GL_CYAN); 
+    } 
+}
+
+void draw_fire_status(int status){
+    gl_draw_rect(235, _HEIGHT/2 + 200, 300, 25, GL_BLACK);
+    if(status == FIRING){
+        gl_draw_string(235, _HEIGHT/2 + 200, "Firing Darts!", GL_CYAN); 
+    }else if(status == RESTING){
+        gl_draw_string(235, _HEIGHT/2 + 200, "Not firing...", GL_CYAN);
+    }
 }
 
 
-void draw_display(void) {
-    
+void draw_target_distance(int distance){
+    char buf[100];
+    snprintf(buf, sizeof(buf), "Target Distance: %d inches away", distance);
+    gl_draw_rect(100, _HEIGHT/2 + 150, 500, 25, GL_BLACK);
+    gl_draw_string(100, _HEIGHT/2 + 150, buf, GL_CYAN); 
+}
+
+void draw_frame_and_gun(void) {
+
     // Draw Gun Symbol
     gl_draw_rect(300, 250, 40, 20, GL_BLUE);
     gl_draw_string(302, 280, "Gun", GL_GREEN);
@@ -89,10 +106,9 @@ void draw_display(void) {
 }
 
 
-
 void draw_or_clear_target(int pos, int action) {
 
-    static int location_1_x = 315;
+    /*static int location_1_x = 315;
     static int location_1_y1 = 100;
     static int location_1_y2 = 104;
 
@@ -100,23 +116,28 @@ void draw_or_clear_target(int pos, int action) {
     static int side_location_y1 = 130;
     static int side_location_y2 = 134;
 
-    static int location_2_x = 200;
+    static int location_2_x = 200;*/
 
+    static int location_1_x = 315, location_1_y1 = 100, location_1_y2 = 104;
+
+    static int location_0_x = 430, side_location_y1 = 130, side_location_y2 = 134;
+
+    static int location_2_x = 200;
     color_t color1;
     color_t color2;
     if(action == DRAW) {
-      color1 = GL_RED;
-      color2 = GL_MAGENTA;
+        color1 = GL_RED;
+        color2 = GL_MAGENTA;
     } else if(action == CLEAR){
-      color1 = GL_BLACK;
-      color2 = GL_BLACK;
+        color1 = GL_BLACK;
+        color2 = GL_BLACK;
     } else {
         return; // invalid action
     }
 
     if(pos == 1){
-        gl_draw_triangle(location_1_x + 5, location_1_y1, location_1_x, location_1_y1 + 10, location_1_x + 10, location_1_y1 + 10, color1); // TODO: not constant
-        gl_draw_triangle(location_1_x + 5, location_1_y2 + 10, location_1_x, location_1_y2, location_1_x + 10, location_1_y2, color2); // TODO: not constant
+        gl_draw_triangle(location_1_x + 5, location_1_y1, location_1_x, location_1_y1 + 10, location_1_x + 10, location_1_y1 + 10, color1); 
+        gl_draw_triangle(location_1_x + 5, location_1_y2 + 10, location_1_x, location_1_y2, location_1_x + 10, location_1_y2, color2); 
     } else if(pos == 0){
         gl_draw_triangle(location_0_x + 5, side_location_y1, location_0_x, side_location_y1 + 10, location_0_x + 10, side_location_y1 + 10, color1); 
         gl_draw_triangle(location_0_x + 5, side_location_y2 + 10, location_0_x, side_location_y2, location_0_x + 10, side_location_y2, color2); 
@@ -124,6 +145,5 @@ void draw_or_clear_target(int pos, int action) {
         gl_draw_triangle(location_2_x + 5, side_location_y1, location_2_x, side_location_y1 + 10, location_2_x + 10, side_location_y1 + 10, color1); 
         gl_draw_triangle(location_2_x + 5, side_location_y2 + 10, location_2_x, side_location_y2, location_2_x + 10, side_location_y2, color2); 
     }
-
 }
 
