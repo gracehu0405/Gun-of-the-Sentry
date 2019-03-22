@@ -12,7 +12,6 @@
 
 #define LINE_LEN 80
 #define KEYBOARD_CLOCK_NEW GPIO_PIN12
-#define THRESHOLD 2000000
 
 static int welcome_user_and_get_mode(void);
 static void interactive_mode(void);
@@ -23,11 +22,11 @@ void main(void){
     uart_init();
     timer_init();
     gpio_init();
-    gun_init();
     shell_init(printf); //console_printf and change all printf to shell_printf
     keyboard_init(KEYBOARD_CLOCK_NEW, KEYBOARD_DATA);
 
-    mode = welcome_user_and_get_mode();
+    int mode = welcome_user_and_get_mode();
+    gun_init(mode);
     graphics_init();
 
     if(mode == AUTO){
@@ -46,32 +45,33 @@ void main(void){
 
 static void auto_mode(int middleIndex){
     int smallestIndex;
+    unsigned int prev_time;
+
     while(1){
-        //write_text();
-        /* while(1) {
-           printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
-           timer_delay_ms(250);
-           }*/
-       // printf("distance_0 = %d inches, distance_1 = %d inches, distance_2 = %d inches\n", getDistance(0), getDistance(1), getDistance(2));
         smallestIndex = closestSensor();
         if(smallestIndex < middleIndex){
             rotate_clockwise();
+
+            // (erase middle and) draw new target location here (pass position as paramater)
         } else if(smallestIndex > middleIndex){
             rotate_counter_clockwise();
+            // (erase middle and) draw new target location here (pass position as parameter)
         }
 
-        int prev_time = timer_get_ticks();
+        prev_time = timer_get_ticks();
         while(closestSensor() != middleIndex){
-           if((timer_get_ticks() - prev_time) > THRESHOLD) break;
+            if((timer_get_ticks() - prev_time) > TRACKING_TIMEOUT) break;
         }
-        timer_delay_ms(300);
-     	rotator_off();
+        timer_delay_ms(CALIBRATION_DELAY);
+        rotator_off();
 
         if(getDistance(closestSensor()) < MAX_RANGE){
             fire_once();
+            // erase left and right and draw target in the center
         }
 
         while(getDistance(closestSensor()) < MAX_RANGE && closestSensor() == middleIndex){}
+        // erase center
     }
 
 }

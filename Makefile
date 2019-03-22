@@ -28,7 +28,7 @@ all : $(NAME).bin $(MY_MODULES)
 install: $(NAME).bin
 	rpi-install.py -p $<
 
-test: graphics_tests.c
+test: tests/graphics_tests.bin
 	rpi-install.py -p $<
 
 clean:

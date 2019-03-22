@@ -16,14 +16,21 @@
 #include "timer.h"
 
 static int bullets_left = NUM_DARTS;
+static int gun_mode;
 
-void gun_init(void){
+void gun_init(int mode){
    gpio_set_output(GUN_TRIGGER);
    gpio_set_output(ROTATOR_POS);
    gpio_set_output(ROTATOR_NEG);
 
    trigger_off();
    rotator_off();
+
+   gun_mode = mode;
+}
+
+int get_gun_mode(void){
+  return gun_mode;
 }
 
 

@@ -3,6 +3,8 @@
 
 #define NUM_DARTS 18
 #define ONE_BULLET_DELAY 333
+#define CALIBRATION_DELAY 300
+#define TRACKING_TIMEOUT 2000000
 
 #include "gpio.h"
 
@@ -21,10 +23,11 @@ enum gun_pins{
     GUN_TRIGGER = GPIO_PIN21,
 };
 
-int mode;
-
 /* Initialize the gun for operation */
-void gun_init(void);
+void gun_init(int mode);
+
+/* Returns the current mode of the gun (auto or interactive) */
+int get_gun_mode(void);
 
 /* Turn the trigger on (fires the gun) */
 void trigger_on(void);
