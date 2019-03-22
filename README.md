@@ -14,20 +14,20 @@ A **Nerf Dart Zone Titan** was used due to its ability to automatically reload d
 
 Below, each component is described in detail:
 
-## :electric_plug: Hardware
+## Hardware
 
 The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, arducam, and graphics.  
 
 ![Image](https://github.com/cs107e/sandersen12-mcoduoza-gracehu0405-project/blob/master/gun.jpeg)
 
-## :speaker: Sensors
+## Sensors
 For automatic mode, **3 Ultrasonic Module HC-SR04 Sensors** measure the distance of objects in front of them. This value is converted to inches and the shortest distance is calculated. If there is an object within the **threshold of 150 inches**, the nerf gun fires. The sensors are multiplexed in sequence through an **interrupts** routine, providing the "illusion" of having all the distance information at the same time. 
 
 - **Sensormap.h** lays out the GPIO pins associated with each sensor. Each standard HC-SR04 ultrasonic sensor has one trigger pin and one echo pin. We create two entries for the echo pin to be able to independently detect both rising and falling edges on the pin.
 
 - **Ultrasound.h** initializes each sensor, determines the distance measured by each sensor, the sensor with the closest distance, and the middle sensor on the nerf gun apparatus.
 
-## :computer: Graphics
+## Graphics
 
 The monitor displays a diagram of the gun and the target, as well as updates of how many darts left and which mode the user has selected.  A star is drawn to represent the target's location with respect to the sensors.  
 
