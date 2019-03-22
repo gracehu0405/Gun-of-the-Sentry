@@ -16,7 +16,7 @@ Below, each component is described in detail:
 
 ## Hardware
 
-The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, arducam, and graphics.  
+The nerf gun is mounted on a rotating platform. Four acrylic arms were laser cut out to hold and stabilize the gun, and adhesives anchor it in place. A base made of foam poster board is rotated by a servo motor, powered by 5V. A Raspberry Pi Model A+ (V1.1, 2014) is used to control the motor, keyboard, sensors, and graphics.  
 
 ![Image](https://github.com/cs107e/sandersen12-mcoduoza-gracehu0405-project/blob/master/gun.jpeg)
 
@@ -35,7 +35,7 @@ The monitor displays a diagram of the gun and the target, as well as updates of 
 
 To generate the trigger mechanism, we opened up the nerf gun and observed the hardware. By wiring the electronic firing system to the raspberry pi, we were able to control the firing of the gun by setting the GPIO pin to high.
 
-- **Gun.h** includes the functions necessary for rotating and firing the nerf gunautomatically.  It rotates the gun until the middle sensor is reading the smallest distance, meaning it is facing the closest target, and then fires one dart.
+- **Gun.h** includes the functions necessary for rotating and firing the nerf gun automatically.  It rotates the gun until the middle sensor is reading the smallest distance, meaning it is facing the closest target, and then fires one dart.
 
 ## Breakdown
 
