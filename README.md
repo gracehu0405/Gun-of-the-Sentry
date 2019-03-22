@@ -38,7 +38,7 @@ To generate the trigger mechanism, we opened up the nerf gun and observed the ha
 
 ## Breakdown
 
-Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration, overall circuit design, wiring of electrical componetns
+Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration, overall circuit design, wiring of electrical components
 
 Grace: Graphics, building the base and mechanics, laser cutting, calibrating shooting, gun stability
 
@@ -46,4 +46,4 @@ Steffi: Building the base and mechanics, calibrating shooting, servo motor, rota
 
 ## References
 
---add sources--
+Inspiration: https://www.hackster.io/hackershack/raspberry-pi-motion-tracking-gun-turret-77fb0b
