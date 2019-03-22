@@ -157,7 +157,6 @@ static void interactive_mode(void){
     key_event_t evt;
 
     while(1) {
-        write_text();
 
         if(keyboard_read_next() == PS2_KEY_ESC) break;
 
