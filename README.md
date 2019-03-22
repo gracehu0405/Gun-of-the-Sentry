@@ -38,7 +38,7 @@ To generate the trigger mechanism, we opened up the nerf gun and observed the ha
 
 ## Breakdown
 
-Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration, overall circuit design, wiring of electrical components
+Michael: Sensors, interrupts, mode switching, sensor map, trigger mechanism, code integration, overall circuit design, wiring of electrical components, graphics
 
 Grace: Graphics, building the base and mechanics, laser cutting, calibrating shooting, gun stability
 
