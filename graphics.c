@@ -6,7 +6,7 @@
 #include "font.h"
 #include "timer.h"
 #include "console.h"
-//#include "gun.h"
+#include "gun.h"
 
 /* graphics.c
  * -----
@@ -21,62 +21,76 @@
  * target is found and when darts are fired, etc.
  */
 
+// Function prototypes
+static void draw_mode(void);
+static void draw_remaining_darts(void); 
+static void draw_display_info(void);
+static void draw_display(void); 
+
 
 void graphics_init(void) {
     gl_init(_WIDTH, _HEIGHT, GL_SINGLEBUFFER);
     gl_clear(GL_BLACK);
 }
 
+// Main function that draws graphics
 void write_text(void) {
+    draw_mode();
+    draw_remaining_darts(); 
+    draw_display_info();
+    draw_display(); 
+}
 
-    // Top left: Mode
+
+// Mode: Top left of graphics tells you which mode you're in
+void draw_mode(void) {
+
     gl_draw_string(30, 150, "Mode:", GL_GREEN);
     gl_draw_string(40, 170, "A/I", GL_GREEN);
 
-    /* if (get_gun_mode() == AUTO) {
+    if (get_gun_mode() == AUTO) {
        gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
-       } else {
+    } else {
        gl_draw_rect(66, 186, 14, 3, GL_YELLOW); // Right (I)
-       }*/
+    }
 
-    gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
+    //gl_draw_rect(38, 186, 14, 3, GL_YELLOW); // Left (A)
+}
 
 
-    // Top right: Remaining Darts
+// Top right: Remaining Darts
+void draw_remaining_darts(void) {
     gl_draw_rect(560, 140, 20, 20, GL_WHITE); // square
-
-    // char buf[30];
-    //memset(buf, 0x77, sizeof(buf));
-    //snprintf(buf, 5, "%d", num_darts);
-
-    gl_draw_string(565, 143, "8", GL_BLUE); // TODO: not constant 
+    gl_draw_string(565, 143, get_ammo_remaining(), GL_BLUE);
     gl_draw_string(540, 165, "Darts", GL_GREEN);
     gl_draw_string(545, 185, "Left", GL_GREEN);
+}
 
-    // Bottom Center: Display info
+
+// Bottom Center: Display info
+void draw_display_info(void) {
     gl_draw_string(200, _HEIGHT/2 + 100, "Locked down target!", GL_CYAN); // TODO: not constant
     gl_draw_string(100, _HEIGHT/2 + 150, "Target Distance: 9 inches away", GL_CYAN); // TODO: not constant
     gl_draw_rect(_WIDTH/2 + 15, _HEIGHT/2 + 170, 16, 3, GL_BLUE); // Underline the number
     gl_draw_string(235, _HEIGHT/2 + 200, "Firing Darts!", GL_CYAN); // TODO: not constant
+}
 
+
+void draw_display(void) {
+    
     // Draw Gun Symbol
-    gl_draw_rect(300, 150, 40, 20, GL_BLUE);
-    gl_draw_string(303, 190, "Gun", GL_GREEN);
+    gl_draw_rect(300, 250, 40, 20, GL_BLUE);
+    gl_draw_string(302, 280, "Gun", GL_GREEN);
 
     // Draw Frame box
     gl_draw_line(120, 0, 120, 325, GL_WHITE);
     gl_draw_line(_WIDTH - 120, 0, _WIDTH - 120, 325, GL_WHITE);
     gl_draw_line(120, 325, _WIDTH - 120, 325, GL_WHITE);
-
 }
 
-void update_screen(void){
 
 
-
-}
-
-void draw_or_clear_target(int pos, int action){
+void draw_or_clear_target(int pos, int action) {
 
     static int location_1_x = 315;
     static int location_1_y1 = 100;
