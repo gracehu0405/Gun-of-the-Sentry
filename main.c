@@ -63,6 +63,7 @@ static void auto_mode(int middleIndex){
 
     while(1){
         smallestIndex = closestSensor();
+
         if(smallestIndex < middleIndex){
             rotate_clockwise();
             draw_or_clear_target(middleIndex, CLEAR);
